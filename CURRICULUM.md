@@ -285,3 +285,16 @@ La pregunta final no es:
 Sino:
 
 > **«¿Qué parte de mi trabajo puedo delegar a IA sin perder el control sobre el resultado?»**
+
+
+## Evaluación por dominio
+
+Cada módulo funciona como una **misión** con tres fases:
+
+1. **Aprender:** idea clave, objetivos y explicación.
+2. **Aplicar:** práctica sobre una tarea real del alumno.
+3. **Demostrar:** una prueba breve de dominio dentro del curso.
+
+La recompensa de XP y la insignia asociada al módulo se desbloquean al superar la prueba de dominio. Fallar no penaliza: el alumno recibe una pista y puede volver a intentarlo.
+
+La gamificación mide **progreso y dominio**, no velocidad. No existen rachas obligatorias, tablas de clasificación ni penalizaciones por descansar.
