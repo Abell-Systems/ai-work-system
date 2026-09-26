@@ -9,7 +9,7 @@
 .top{display:flex;justify-content:space-between;gap:32px;padding:42px 0 34px;border-bottom:1px solid #cfc9bf}
 .eyebrow,.section-label,.step,.feedback-title{font-size:11px;letter-spacing:.16em;font-weight:800;color:#766f65}
 h1{font-size:clamp(48px,8vw,92px);line-height:.9;letter-spacing:-.055em;margin:14px 0 24px;max-width:800px}
-h1 em{font-style:normal;color:#756c5e}p{max-width:720px;color:#625e57}.status{font-size:13px;font-weight:800;white-space:nowrap;padding-top:5px}
+h1 em{font-style:normal;color:#756c5e}p{max-width:720px;color:#625e57}.hud{min-width:190px;text-align:right}.level{font-size:10px;letter-spacing:.12em;font-weight:900;color:#766f65}.status{font-size:13px;font-weight:800;margin-top:4px}.xpbar{height:6px;background:#ddd8d0;border-radius:99px;margin:9px 0 4px;overflow:hidden}.xpbar span{display:block;height:100%;width:0;background:#171717;border-radius:99px;transition:width .4s}.xp{font-size:11px;font-weight:800;color:#625e57}.progress-card{margin-top:14px;padding:14px;background:#ebe7e0;border-radius:10px}.progress-card strong{font-size:22px;display:block}.progress-card span{font-size:10px;letter-spacing:.12em;color:#766f65;font-weight:800}.track{height:5px;background:#d5d0c8;border-radius:99px;margin-top:9px;overflow:hidden}.track i{display:block;width:0;height:100%;background:#4d5a48;transition:width .4s}.badges{display:grid;gap:7px;margin-top:18px}.badge{padding:11px 12px;border:1px solid #d8d2c9;border-radius:9px;background:#f8f6f2;font-size:12px;display:flex;gap:9px;align-items:center}.badge.locked{opacity:.45}.badge strong{font-size:12px}.badge small{display:block;color:#766f65}
 main{display:grid;grid-template-columns:280px 1fr;gap:56px;padding:42px 0}
 .nodes{display:grid;gap:7px;margin-top:18px}.node{display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:center;padding:10px 12px;color:#918a80;border-radius:8px;cursor:pointer}.node span{font-size:10px}.node strong{font-size:13px}.node.active{background:#171717;color:#fff}.node.done{color:#4d5a48}.node.done.active{background:#171717;color:#fff}
 .hero-card{background:#fff;border:1px solid #ded9d0;border-radius:14px;padding:32px;box-shadow:0 18px 50px #00000009}
@@ -22,19 +22,19 @@ main{display:grid;grid-template-columns:280px 1fr;gap:56px;padding:42px 0}
 .objectives{margin:24px 0 0;padding:20px;border-top:1px solid #e2ddd5}.objectives ul{margin:10px 0;padding-left:20px}.objectives li{margin:7px 0;color:#625e57}
 .final{margin-top:18px;border:1px solid #d8d2c9;border-radius:14px;padding:24px;background:#171717;color:#fff}.final p{color:#d0cbc2}.final strong{color:#fff}
 footer{border-top:1px solid #cfc9bf;padding-top:18px;font-size:10px;letter-spacing:.12em;color:#857e74}
-@media(max-width:800px){.top{display:block}.status{margin-top:18px}main{grid-template-columns:1fr;gap:25px}.nodes{grid-template-columns:repeat(2,1fr)}.node{padding:8px}.hero-card{padding:22px}.external{display:block}.external button{margin-top:16px}}
+@media(max-width:800px){.top{display:block}.hud{text-align:left;margin-top:18px}.status{margin-top:4px}main{grid-template-columns:1fr;gap:25px}.nodes{grid-template-columns:repeat(2,1fr)}.node{padding:8px}.hero-card{padding:22px}.external{display:block}.external button{margin-top:16px}}
 </style>
 </head>
 <body><div class="app">
-<header class="top"><div><div class="eyebrow">INTERACTIVE MOOC · 01 / 10</div><h1>IA como<br><em>sistema de trabajo.</em></h1><p>Aprende a convertir una tarea en un proceso humano + IA que pueda observarse, verificarse e iterarse. Sin programar.</p></div><div id="status" class="status">○ En progreso</div></header>
-<main><section class="map"><div class="section-label">TU RECORRIDO</div><div id="nodes" class="nodes"></div></section>
+<header class="top"><div><div class="eyebrow">INTERACTIVE MOOC · 01 / 10</div><h1>IA como<br><em>sistema de trabajo.</em></h1><p>Aprende a convertir una tarea en un proceso humano + IA que pueda observarse, verificarse e iterarse. Sin programar.</p></div><div class="hud"><div id="level" class="level">NIVEL 1 · EXPLORADOR</div><div id="status" class="status">0 / 10 módulos</div><div class="xpbar"><span id="xpfill"></span></div><div id="xp" class="xp">0 XP</div></div></header>
+<main><section class="map"><div class="section-label">TU RECORRIDO</div><div class="progress-card"><strong id="progressText">0%</strong><span>progreso</span><div class="track"><i id="progressFill"></i></div></div><div id="nodes" class="nodes"></div></section>
 <section class="lesson"><div id="moduleLabel" class="section-label">MÓDULO 01 · CAMBIA CÓMO VES LA IA</div>
 <div class="hero-card"><div class="step">IDEA CLAVE</div><h2 id="title">La IA no es el proceso.</h2><p id="intro">La IA es un componente de tu proceso de trabajo. Antes de pedirle que haga algo, necesitas saber qué problema estás resolviendo.</p><div id="meta" class="module-meta"></div><div class="objectives"><div class="step">LO QUE VAS A APRENDER</div><ul id="objectives"></ul></div><div id="interactive"></div></div>
 <div id="external" class="external"><div><div class="step">PRÁCTICA REAL</div><h3 id="practiceTitle">Llévalo a tu trabajo.</h3><p id="practiceText">Elige una tarea real y utiliza tu propia IA. El curso enseña el método; la ejecución ocurre fuera.</p></div><button id="open">Abrir práctica ↗</button></div>
 <div id="mission" class="mission" hidden><div class="step">EN TU PROPIA IA</div><h3 id="missionTitle">Primera práctica</h3><ol id="missionSteps"></ol><p class="return">Vuelve al curso cuando hayas hecho la práctica.</p><button id="complete" disabled>He vuelto · continuar</button></div>
 <div id="final" class="final" hidden><div class="step" style="color:#b7b0a5">PROYECTO FINAL</div><h3 style="color:#fff">Diseña tu sistema humano + IA.</h3><p>Selecciona una tarea real y documenta objetivo, contexto, proceso, herramientas, autonomía, aprobaciones, verificación y métrica antes/después.</p><p><strong>Pregunta guía:</strong> ¿qué parte de mi trabajo puedo delegar a IA sin perder el control sobre el resultado?</p></div>
 </section></main>
-<footer>DETERMINISTIC BY DESIGN · TU IA OCURRE FUERA · EL APRENDIZAJE OCURRE AQUÍ</footer>
+<div class="badges" id="badges"></div><footer>DETERMINISTIC BY DESIGN · TU IA OCURRE FUERA · EL APRENDIZAJE OCURRE AQUÍ</footer>
 </div>
 <script>
 const modules=[
@@ -50,8 +50,11 @@ const modules=[
 {t:"Diseña tu sistema",idea:"El objetivo no es tener un agente; es mejorar un sistema de trabajo.",intro:"Combina persona, IA, herramientas y controles en un proceso medible.",learn:["Seleccionar procesos delegables","Diseñar controles","Medir antes y después"],practice:"Construye tu proyecto final.",steps:["Documenta el proceso actual.","Diseña el proceso humano + IA.","Define herramientas, autonomía y aprobaciones.","Define verificación y manejo de errores.","Mide tiempo, errores, pasos manuales o calidad antes y después."],final:true}
 ];
 const nodes=document.querySelector("#nodes"),status=document.querySelector("#status"),complete=document.querySelector("#complete"),mission=document.querySelector("#mission"),open=document.querySelector("#open"),interactive=document.querySelector("#interactive");
-let current=0, practiced=false;
+let current=Number(localStorage.getItem("aws-current")||0), practiced=false;
 modules.forEach((m,i)=>{const n=document.createElement("div");n.className="node";n.innerHTML="<span>"+String(i+1).padStart(2,"0")+"</span><strong>"+m.t+"</strong>";n.onclick=()=>{if(i<=current){current=i;render()}};nodes.appendChild(n)});
+const badgeDefs=[["🧭","Primer paso","Completa el módulo 1"],["🧱","Constructor de contexto","Completa el módulo 3"],["🔄","Iterador","Completa el módulo 4"],["🔎","Investigador","Completa el módulo 5"],["🛡️","Verificador","Completa el módulo 7"],["🧰","Diseñador de flujos","Completa el módulo 8"],["🤖","Constructor de agentes","Completa el módulo 9"],["🏁","Diseñador de sistemas","Completa los 10 módulos"]];
+function getXP(){return modules.reduce((n,_,i)=>n+(localStorage.getItem("aws-m"+(i+1))==="done"?100:0),0)}
+function updateGamification(){const done=modules.filter((_,i)=>localStorage.getItem("aws-m"+(i+1))==="done").length;const xp=getXP();const levels=[["Explorador",0],["Practicante",200],["Operador",500],["Delegador",800],["Diseñador de sistemas",1000]];let lv=levels[0];levels.forEach(x=>{if(xp>=x[1])lv=x});document.querySelector("#level").textContent="NIVEL "+(levels.indexOf(lv)+1)+" · "+lv[0].toUpperCase();document.querySelector("#status").textContent=done+" / 10 módulos";document.querySelector("#xp").textContent=xp+" XP";document.querySelector("#xpfill").style.width=Math.min(100,(xp/1000)*100)+"%";document.querySelector("#progressText").textContent=Math.round(done/10*100)+"%";document.querySelector("#progressFill").style.width=(done/10*100)+"%";document.querySelector("#badges").innerHTML=badgeDefs.map((b,i)=>{const unlocked=done>=[1,3,4,5,7,8,9,10][i];return "<div class='badge "+(unlocked?"":"locked")+"'><span>"+b[0]+"</span><div><strong>"+b[1]+"</strong><small>"+b[2]+"</small></div></div>"}).join("")}
 function render(){
  const m=modules[current]; document.querySelector(".eyebrow").textContent="INTERACTIVE MOOC · "+String(current+1).padStart(2,"0")+" / 10";
  document.querySelector("#moduleLabel").textContent="MÓDULO "+String(current+1).padStart(2,"0")+" · "+m.t.toUpperCase();
@@ -64,15 +67,15 @@ function render(){
  document.querySelector("#final").hidden=!m.final; mission.hidden=true; open.textContent="Abrir práctica ↗"; complete.disabled=true; practiced=false;
  interactive.innerHTML="";
  if(m.type==="scenario") renderScenario(); else renderContinue();
- document.querySelectorAll(".node").forEach((n,i)=>{n.classList.toggle("active",i===current);n.classList.toggle("done",localStorage.getItem("aws-m"+(i+1))==="done")});
+ document.querySelectorAll(".node").forEach((n,i)=>{n.classList.toggle("active",i===current);n.classList.toggle("done",localStorage.getItem("aws-m"+(i+1))==="done")}); updateGamification(); localStorage.setItem("aws-current",current);
  status.textContent=localStorage.getItem("aws-m"+(current+1))==="done"?"● Completado":"○ En progreso";
 }
 function renderScenario(){
  const box=document.createElement("div");box.innerHTML="<div class='step'>SITUACIÓN</div><h3>Te han pedido preparar un informe para dirección. ¿Qué haces primero?</h3><div class='choices'></div><div id='feedback'></div>";interactive.appendChild(box);
  [["Definir objetivo y contexto","Antes de pedir trabajo a una IA necesitas definir qué problema estás resolviendo.",true],["Pedir directamente a la IA que lo haga","Obtendrás una respuesta, pero todavía no has diseñado el proceso.",false],["Buscar una plantilla y rellenarla","Una plantilla puede ayudar, pero no has aclarado todavía el resultado ni cómo comprobarlo.",false]].forEach(([l,t,g])=>{const b=document.createElement("button");b.className="choice";b.innerHTML="<span>"+l+"</span><span>→</span>";b.onclick=()=>{box.querySelectorAll(".choice").forEach(x=>x.classList.remove("selected"));b.classList.add("selected");const f=box.querySelector("#feedback");f.className="feedback"+(g?" good":"");f.innerHTML="<div class='feedback-title'>"+(g?"BUENA DECISIÓN":"OBSERVA LA CONSECUENCIA")+"</div><p>"+t+"</p>";complete.disabled=!g};box.querySelector(".choices").appendChild(b)});
 }
-function renderContinue(){const p=document.createElement("div");p.className="feedback";p.innerHTML="<div class='feedback-title'>APLICACIÓN</div><p>La práctica de este módulo ocurre en tu propio trabajo. Abre la misión y vuelve cuando hayas probado el método.</p>";interactive.appendChild(p)}
+function renderContinue(){complete.disabled=false;const p=document.createElement("div");p.className="feedback";p.innerHTML="<div class='feedback-title'>APLICACIÓN</div><p>La práctica de este módulo ocurre en tu propio trabajo. Abre la misión y vuelve cuando hayas probado el método.</p>";interactive.appendChild(p)}
 open.onclick=()=>{mission.hidden=!mission.hidden;open.textContent=mission.hidden?"Abrir práctica ↗":"Cerrar"};
-complete.onclick=()=>{localStorage.setItem("aws-m"+(current+1),"done");status.textContent="● Completado";complete.textContent="✓ Módulo completado";practiced=true;document.querySelectorAll(".node")[current].classList.add("done");if(current<9){current++;setTimeout(render,250)}};
+complete.onclick=()=>{if(complete.disabled)return;localStorage.setItem("aws-m"+(current+1),"done");complete.textContent="✓ Módulo completado · +100 XP";complete.disabled=true;document.querySelectorAll(".node")[current].classList.add("done");updateGamification();if(current<9){current++;setTimeout(render,450)}};
 render();
 </script></body></html>
