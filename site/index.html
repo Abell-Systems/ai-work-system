@@ -1,8 +1,7 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>IA como sistema de trabajo</title>
 <style>
 :root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#171717;background:#f4f1eb;line-height:1.5}
@@ -12,44 +11,68 @@
 h1{font-size:clamp(48px,8vw,92px);line-height:.9;letter-spacing:-.055em;margin:14px 0 24px;max-width:800px}
 h1 em{font-style:normal;color:#756c5e}p{max-width:720px;color:#625e57}.status{font-size:13px;font-weight:800;white-space:nowrap;padding-top:5px}
 main{display:grid;grid-template-columns:280px 1fr;gap:56px;padding:42px 0}
-.nodes{display:grid;gap:7px;margin-top:18px}.node{display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:center;padding:10px 12px;color:#918a80;border-radius:8px}.node span{font-size:10px}.node strong{font-size:13px}.node.active{background:#171717;color:#fff}
-.hero-card{background:#fff;border:1px solid #ded9d0;border-radius:14px;padding:32px;box-shadow:0 18px 50px #00000009}.step{margin-bottom:12px}
-h2{font-size:38px;line-height:1;letter-spacing:-.035em;margin:0 0 14px}h3{font-size:24px;letter-spacing:-.025em;margin:4px 0 8px}
+.nodes{display:grid;gap:7px;margin-top:18px}.node{display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:center;padding:10px 12px;color:#918a80;border-radius:8px;cursor:pointer}.node span{font-size:10px}.node strong{font-size:13px}.node.active{background:#171717;color:#fff}.node.done{color:#4d5a48}.node.done.active{background:#171717;color:#fff}
+.hero-card{background:#fff;border:1px solid #ded9d0;border-radius:14px;padding:32px;box-shadow:0 18px 50px #00000009}
+.step{margin-bottom:12px}h2{font-size:38px;line-height:1;letter-spacing:-.035em;margin:0 0 14px}h3{font-size:24px;letter-spacing:-.025em;margin:4px 0 8px}
 .choices{display:grid;gap:9px;margin-top:26px}.choice{border:1px solid #d8d2c9;background:#f8f6f2;border-radius:9px;padding:16px;text-align:left;font:inherit;display:flex;justify-content:space-between;cursor:pointer}.choice:hover,.choice.selected{border-color:#171717;background:#f0ede7}
 .feedback{margin-top:14px;padding:18px;border-radius:9px;background:#f1ece4}.feedback.good{background:#e8eee5}.feedback p{margin:6px 0 0;font-size:14px}
-.external,.mission{margin-top:18px;border:1px solid #d8d2c9;border-radius:14px;padding:24px;display:flex;justify-content:space-between;gap:20px;align-items:end;background:#eeeae3}.external button,.mission button{border:0;background:#171717;color:#fff;border-radius:8px;padding:12px 16px;font-weight:800;cursor:pointer;white-space:nowrap}.mission{display:block;background:#fff}.mission ol{padding-left:22px}.mission li{margin:8px 0}.mission button:disabled{opacity:.35;cursor:not-allowed}.return{font-size:13px}
+.external,.mission{margin-top:18px;border:1px solid #d8d2c9;border-radius:14px;padding:24px;display:flex;justify-content:space-between;gap:20px;align-items:end;background:#eeeae3}
+.external button,.mission button{border:0;background:#171717;color:#fff;border-radius:8px;padding:12px 16px;font-weight:800;cursor:pointer;white-space:nowrap}.mission{display:block;background:#fff}.mission ol{padding-left:22px}.mission li{margin:8px 0}.mission button:disabled{opacity:.35;cursor:not-allowed}.return{font-size:13px}
+.module-meta{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0}.pill{border:1px solid #d8d2c9;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:800;color:#6d675f}
+.objectives{margin:24px 0 0;padding:20px;border-top:1px solid #e2ddd5}.objectives ul{margin:10px 0;padding-left:20px}.objectives li{margin:7px 0;color:#625e57}
+.final{margin-top:18px;border:1px solid #d8d2c9;border-radius:14px;padding:24px;background:#171717;color:#fff}.final p{color:#d0cbc2}.final strong{color:#fff}
 footer{border-top:1px solid #cfc9bf;padding-top:18px;font-size:10px;letter-spacing:.12em;color:#857e74}
 @media(max-width:800px){.top{display:block}.status{margin-top:18px}main{grid-template-columns:1fr;gap:25px}.nodes{grid-template-columns:repeat(2,1fr)}.node{padding:8px}.hero-card{padding:22px}.external{display:block}.external button{margin-top:16px}}
 </style>
 </head>
-<body>
-<div class="app">
-<header class="top"><div><div class="eyebrow">INTERACTIVE MOOC · 01 / 10</div><h1>IA como<br><em>sistema de trabajo.</em></h1><p>Aprende a convertir una tarea en un proceso humano + IA que pueda observarse, verificarse e iterarse.</p></div><div id="status" class="status">○ En progreso</div></header>
-<main>
-<section class="map"><div class="section-label">TU RECORRIDO</div><div id="nodes" class="nodes"></div></section>
-<section class="lesson"><div class="section-label">MISIÓN 01 · CAMBIAR EL MODELO MENTAL</div>
-<div class="hero-card"><div class="step">SITUACIÓN</div><h2>La IA no es el proceso.</h2><p>Te han pedido preparar un informe para dirección. Tienes documentos, datos y acceso a una IA. <strong>¿Qué haces primero?</strong></p><div id="choices" class="choices"></div><div id="feedback"></div></div>
-<div class="external"><div><div class="step">MISIÓN EXTERNA</div><h3>Ahora sal del curso.</h3><p>Utiliza tu propia IA para realizar esta tarea. El curso no ejecuta IA: te enseña el método y después te pide volver con lo aprendido.</p></div><button id="open">Abrir misión ↗</button></div>
-<div id="mission" class="mission" hidden><div class="step">EN TU PROPIA IA</div><h3>Hazlo en el mundo real.</h3><ol><li>Define el objetivo del informe en una frase.</li><li>Reúne el contexto y las restricciones relevantes.</li><li>Usa tu IA para generar una primera propuesta.</li><li>Observa qué falta y qué tienes que corregir.</li></ol><p class="return">Cuando vuelvas, reconstruye qué ocurrió.</p><button id="complete" disabled>He vuelto · continuar</button></div>
-</section>
-</main><footer>DETERMINISTIC BY DESIGN · TU IA OCURRE FUERA · EL APRENDIZAJE OCURRE AQUÍ</footer>
+<body><div class="app">
+<header class="top"><div><div class="eyebrow">INTERACTIVE MOOC · 01 / 10</div><h1>IA como<br><em>sistema de trabajo.</em></h1><p>Aprende a convertir una tarea en un proceso humano + IA que pueda observarse, verificarse e iterarse. Sin programar.</p></div><div id="status" class="status">○ En progreso</div></header>
+<main><section class="map"><div class="section-label">TU RECORRIDO</div><div id="nodes" class="nodes"></div></section>
+<section class="lesson"><div id="moduleLabel" class="section-label">MÓDULO 01 · CAMBIA CÓMO VES LA IA</div>
+<div class="hero-card"><div class="step">IDEA CLAVE</div><h2 id="title">La IA no es el proceso.</h2><p id="intro">La IA es un componente de tu proceso de trabajo. Antes de pedirle que haga algo, necesitas saber qué problema estás resolviendo.</p><div id="meta" class="module-meta"></div><div class="objectives"><div class="step">LO QUE VAS A APRENDER</div><ul id="objectives"></ul></div><div id="interactive"></div></div>
+<div id="external" class="external"><div><div class="step">PRÁCTICA REAL</div><h3 id="practiceTitle">Llévalo a tu trabajo.</h3><p id="practiceText">Elige una tarea real y utiliza tu propia IA. El curso enseña el método; la ejecución ocurre fuera.</p></div><button id="open">Abrir práctica ↗</button></div>
+<div id="mission" class="mission" hidden><div class="step">EN TU PROPIA IA</div><h3 id="missionTitle">Primera práctica</h3><ol id="missionSteps"></ol><p class="return">Vuelve al curso cuando hayas hecho la práctica.</p><button id="complete" disabled>He vuelto · continuar</button></div>
+<div id="final" class="final" hidden><div class="step" style="color:#b7b0a5">PROYECTO FINAL</div><h3 style="color:#fff">Diseña tu sistema humano + IA.</h3><p>Selecciona una tarea real y documenta objetivo, contexto, proceso, herramientas, autonomía, aprobaciones, verificación y métrica antes/después.</p><p><strong>Pregunta guía:</strong> ¿qué parte de mi trabajo puedo delegar a IA sin perder el control sobre el resultado?</p></div>
+</section></main>
+<footer>DETERMINISTIC BY DESIGN · TU IA OCURRE FUERA · EL APRENDIZAJE OCURRE AQUÍ</footer>
 </div>
 <script>
-const modules=["Cambiar el modelo mental","Dar contexto","Formular trabajo","Trabajar en ciclos","Investigar con IA","Crear con IA","Verificar","Experimentar","Delegar","Diseñar tu sistema"];
-const choices=[
-["context","Definir primero el objetivo y el contexto.","Antes de pedir trabajo a una IA necesitas definir qué problema estás resolviendo y qué información condiciona el resultado.",true],
-["prompt","Pedir directamente a la IA que lo haga.","Obtendrás una respuesta, pero todavía no has diseñado el proceso.",false],
-["template","Buscar una plantilla y empezar a rellenarla.","Una plantilla puede ayudar, pero todavía no has aclarado qué resultado necesitas ni cómo comprobarás su calidad.",false]
+const modules=[
+{t:"Cambia cómo ves la IA",idea:"La IA no es el proceso.",intro:"La IA es un componente de tu proceso de trabajo. Antes de pedirle que haga algo, necesitas saber qué problema estás resolviendo.",learn:["Diferenciar preguntar de delegar","Definir un objetivo antes del prompt","Ver la IA como colaborador, no como oráculo"],practice:"Elige una tarea real y define su objetivo en una frase.",steps:["Elige una tarea que hagas en tu trabajo.","Escribe el resultado que necesitas conseguir, en una frase.","Identifica qué información necesitaría tu IA para ayudarte.","Usa tu IA para hacer una primera propuesta.","Anota qué faltó o qué corregiste."],type:"scenario"},
+{t:"Dale contexto",idea:"La IA solo puede trabajar con lo que conoce.",intro:"Un buen resultado necesita contexto relevante, restricciones, ejemplos y criterios de éxito.",learn:["Separar contexto útil de ruido","Explicar restricciones","Definir criterios de calidad"],practice:"Transforma una petición ambigua en un briefing listo para IA.",steps:["Toma una petición real y ambigua.","Añade contexto, restricciones y resultado esperado.","Indica cómo sabrás si el resultado es bueno.","Pide a tu IA que trabaje con ese briefing." ]},
+{t:"Formula el trabajo",idea:"Una buena petición describe trabajo, no magia.",intro:"Objetivo, resultado, formato, restricciones y criterios de calidad convierten una petición en un encargo ejecutable.",learn:["Especificar resultados","Definir formato y restricciones","Crear criterios de aceptación"],practice:"Convierte una tarea real en una especificación sencilla.",steps:["Describe el objetivo.","Define el resultado esperado.","Añade formato y restricciones.","Añade dos criterios de calidad.","Pide a tu IA que produzca el resultado."]},
+{t:"Trabaja en ciclos",idea:"La primera respuesta es un punto de partida.",intro:"El trabajo con IA mejora cuando observas, corriges y vuelves a ejecutar.",learn:["Iterar con intención","Detectar qué falta","Mejorar mediante ciclos"],practice:"Compara un intento único con una interacción iterativa.",steps:["Haz una primera petición.","Observa tres problemas o carencias.","Pide una revisión concreta.","Compara ambas versiones.","Anota qué cambió."]},
+{t:"Investiga con IA",idea:"Investigar no es pedir un resumen.",intro:"Investigar implica formular preguntas, contrastar información, detectar contradicciones y conservar trazabilidad.",learn:["Formular preguntas de investigación","Comparar fuentes","Separar hechos de inferencias"],practice:"Investiga una cuestión real de tu trabajo.",steps:["Formula una pregunta concreta.","Pide a tu IA que encuentre y sintetice información.","Solicita fuentes y puntos de incertidumbre.","Contrasta al menos dos afirmaciones importantes.","Entrega un briefing con fuentes y dudas abiertas."]},
+{t:"Crea con IA",idea:"La IA acelera la producción; tú mantienes el criterio.",intro:"Puedes usar IA para producir borradores, transformar documentos y explorar alternativas sin delegar automáticamente el juicio.",learn:["Producir primeros borradores","Transformar materiales","Revisar contra criterios"],practice:"Produce un artefacto profesional real.",steps:["Elige un email, informe, propuesta, procedimiento o presentación.","Pide una primera versión a tu IA.","Revísala contra tus criterios de calidad.","Corrige y produce una segunda versión.","Conserva ambas para comparar."]},
+{t:"Verifica",idea:"Convincente no significa correcto.",intro:"Antes de confiar en un resultado necesitas saber qué comprobar, cómo comprobarlo y cuándo debe intervenir una persona.",learn:["Detectar afirmaciones verificables","Comprobar fuentes y consistencia","Definir controles humanos"],practice:"Crea un checklist de verificación reutilizable.",steps:["Toma un resultado generado por IA.","Marca qué afirmaciones podrían ser incorrectas.","Comprueba las más importantes.","Define qué debe revisar siempre una persona.","Guarda el checklist para reutilizarlo."]},
+{t:"Dale herramientas",idea:"El salto es pasar de generar texto a ejecutar trabajo.",intro:"Un flujo sencillo puede describirse como disparador → pasos → herramientas → decisiones → resultado.",learn:["Pensar en flujos","Identificar herramientas","Definir entradas y salidas"],practice:"Dibuja el flujo de una tarea repetitiva.",steps:["Elige una tarea repetitiva.","Escribe qué la dispara.","Enumera los pasos.","Identifica qué herramientas necesitaría cada paso.","Define dónde debe intervenir una persona."]},
+{t:"Construye tu primer agente",idea:"Un agente ejecuta varios pasos hacia un objetivo.",intro:"Un agente combina objetivo, reglas y herramientas. Su autonomía debe estar limitada por permisos y puntos de aprobación.",learn:["Entender qué es un agente","Elegir nivel de autonomía","Diseñar límites y aprobaciones"],practice:"Configura un agente sencillo con una herramienta accesible para ti.",steps:["Define un objetivo concreto.","Escribe reglas y límites.","Indica qué herramientas puede utilizar.","Define qué acciones requieren aprobación.","Prueba un caso normal y un caso de error."]},
+{t:"Diseña tu sistema",idea:"El objetivo no es tener un agente; es mejorar un sistema de trabajo.",intro:"Combina persona, IA, herramientas y controles en un proceso medible.",learn:["Seleccionar procesos delegables","Diseñar controles","Medir antes y después"],practice:"Construye tu proyecto final.",steps:["Documenta el proceso actual.","Diseña el proceso humano + IA.","Define herramientas, autonomía y aprobaciones.","Define verificación y manejo de errores.","Mide tiempo, errores, pasos manuales o calidad antes y después."],final:true}
 ];
-const nodes=document.querySelector("#nodes");
-modules.forEach((m,i)=>{const n=document.createElement("div");n.className="node"+(i===0?" active":"");n.innerHTML="<span>"+String(i+1).padStart(2,"0")+"</span><strong>"+m+"</strong>";nodes.appendChild(n)});
-const choicesEl=document.querySelector("#choices"),feedback=document.querySelector("#feedback"),complete=document.querySelector("#complete");
-let good=false;
-choices.forEach(([id,label,text,isGood])=>{const b=document.createElement("button");b.className="choice";b.innerHTML="<span>"+label+"</span><span>→</span>";b.onclick=()=>{document.querySelectorAll(".choice").forEach(x=>x.classList.remove("selected"));b.classList.add("selected");good=isGood;feedback.className="feedback"+(isGood?" good":"");feedback.innerHTML="<div class='feedback-title'>"+(isGood?"BUENA DECISIÓN":"OBSERVA LA CONSECUENCIA")+"</div><p>"+text+"</p>";complete.disabled=!good}});
-const mission=document.querySelector("#mission"),open=document.querySelector("#open");
-open.onclick=()=>{mission.hidden=!mission.hidden;open.textContent=mission.hidden?"Abrir misión ↗":"Cerrar"};
-complete.onclick=()=>{if(!good)return;localStorage.setItem("aws-m1","done");document.querySelector("#status").textContent="● Completado";complete.textContent="✓ Módulo completado"};
-if(localStorage.getItem("aws-m1")==="done"){document.querySelector("#status").textContent="● Completado";complete.textContent="✓ Módulo completado"}
-</script>
-</body>
-</html>
+const nodes=document.querySelector("#nodes"),status=document.querySelector("#status"),complete=document.querySelector("#complete"),mission=document.querySelector("#mission"),open=document.querySelector("#open"),interactive=document.querySelector("#interactive");
+let current=0, practiced=false;
+modules.forEach((m,i)=>{const n=document.createElement("div");n.className="node";n.innerHTML="<span>"+String(i+1).padStart(2,"0")+"</span><strong>"+m.t+"</strong>";n.onclick=()=>{if(i<=current){current=i;render()}};nodes.appendChild(n)});
+function render(){
+ const m=modules[current]; document.querySelector(".eyebrow").textContent="INTERACTIVE MOOC · "+String(current+1).padStart(2,"0")+" / 10";
+ document.querySelector("#moduleLabel").textContent="MÓDULO "+String(current+1).padStart(2,"0")+" · "+m.t.toUpperCase();
+ document.querySelector("#title").textContent=m.idea;document.querySelector("#intro").textContent=m.intro;
+ document.querySelector("#meta").innerHTML="<span class='pill'>SIN PROGRAMAR</span><span class='pill'>PRÁCTICA REAL</span><span class='pill'>MÓDULO "+(current+1)+"</span>";
+ document.querySelector("#objectives").innerHTML=m.learn.map(x=>"<li>"+x+"</li>").join("");
+ document.querySelector("#practiceText").textContent=m.practice;
+ document.querySelector("#missionTitle").textContent=current===8?"Tu primer agente":current===9?"Proyecto final":"Práctica del módulo";
+ document.querySelector("#missionSteps").innerHTML=m.steps.map(x=>"<li>"+x+"</li>").join("");
+ document.querySelector("#final").hidden=!m.final; mission.hidden=true; open.textContent="Abrir práctica ↗"; complete.disabled=true; practiced=false;
+ interactive.innerHTML="";
+ if(m.type==="scenario") renderScenario(); else renderContinue();
+ document.querySelectorAll(".node").forEach((n,i)=>{n.classList.toggle("active",i===current);n.classList.toggle("done",localStorage.getItem("aws-m"+(i+1))==="done")});
+ status.textContent=localStorage.getItem("aws-m"+(current+1))==="done"?"● Completado":"○ En progreso";
+}
+function renderScenario(){
+ const box=document.createElement("div");box.innerHTML="<div class='step'>SITUACIÓN</div><h3>Te han pedido preparar un informe para dirección. ¿Qué haces primero?</h3><div class='choices'></div><div id='feedback'></div>";interactive.appendChild(box);
+ [["Definir objetivo y contexto","Antes de pedir trabajo a una IA necesitas definir qué problema estás resolviendo.",true],["Pedir directamente a la IA que lo haga","Obtendrás una respuesta, pero todavía no has diseñado el proceso.",false],["Buscar una plantilla y rellenarla","Una plantilla puede ayudar, pero no has aclarado todavía el resultado ni cómo comprobarlo.",false]].forEach(([l,t,g])=>{const b=document.createElement("button");b.className="choice";b.innerHTML="<span>"+l+"</span><span>→</span>";b.onclick=()=>{box.querySelectorAll(".choice").forEach(x=>x.classList.remove("selected"));b.classList.add("selected");const f=box.querySelector("#feedback");f.className="feedback"+(g?" good":"");f.innerHTML="<div class='feedback-title'>"+(g?"BUENA DECISIÓN":"OBSERVA LA CONSECUENCIA")+"</div><p>"+t+"</p>";complete.disabled=!g};box.querySelector(".choices").appendChild(b)});
+}
+function renderContinue(){const p=document.createElement("div");p.className="feedback";p.innerHTML="<div class='feedback-title'>APLICACIÓN</div><p>La práctica de este módulo ocurre en tu propio trabajo. Abre la misión y vuelve cuando hayas probado el método.</p>";interactive.appendChild(p)}
+open.onclick=()=>{mission.hidden=!mission.hidden;open.textContent=mission.hidden?"Abrir práctica ↗":"Cerrar"};
+complete.onclick=()=>{localStorage.setItem("aws-m"+(current+1),"done");status.textContent="● Completado";complete.textContent="✓ Módulo completado";practiced=true;document.querySelectorAll(".node")[current].classList.add("done");if(current<9){current++;setTimeout(render,250)}};
+render();
+</script></body></html>
