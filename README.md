@@ -16,3 +16,6 @@ Module 01 — **Cambiar el modelo mental**
 - GitHub Pages deployment
 
 See [PLAN.md](./PLAN.md).
+
+
+> First public vertical slice: deterministic learning experience, no AI runtime dependency.
