@@ -118,3 +118,8 @@ En navegador real:
 **Implementado:** progreso + XP + niveles + insignias + corrección de finalización de prácticas.
 
 **Pendiente:** validación visual/browser y una segunda iteración de interacción/microfeedback.
+
+
+## Segunda iteración — misiones y dominio
+
+Se añadió una prueba de dominio a cada módulo. La finalización requiere superar la pregunta de comprensión; los errores muestran una pista y permiten reintentar. El objetivo es que XP e insignias representen aprendizaje demostrado y no simples clics.
