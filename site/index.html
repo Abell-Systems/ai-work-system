@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IA como sistema de trabajo</title>
+<style>
+:root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#171717;background:#f4f1eb;line-height:1.5}
+*{box-sizing:border-box}body{margin:0}.app{max-width:1180px;margin:auto;padding:28px 28px 18px}
+.top{display:flex;justify-content:space-between;gap:32px;padding:42px 0 34px;border-bottom:1px solid #cfc9bf}
+.eyebrow,.section-label,.step,.feedback-title{font-size:11px;letter-spacing:.16em;font-weight:800;color:#766f65}
+h1{font-size:clamp(48px,8vw,92px);line-height:.9;letter-spacing:-.055em;margin:14px 0 24px;max-width:800px}
+h1 em{font-style:normal;color:#756c5e}p{max-width:720px;color:#625e57}.status{font-size:13px;font-weight:800;white-space:nowrap;padding-top:5px}
+main{display:grid;grid-template-columns:280px 1fr;gap:56px;padding:42px 0}
+.nodes{display:grid;gap:7px;margin-top:18px}.node{display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:center;padding:10px 12px;color:#918a80;border-radius:8px}.node span{font-size:10px}.node strong{font-size:13px}.node.active{background:#171717;color:#fff}
+.hero-card{background:#fff;border:1px solid #ded9d0;border-radius:14px;padding:32px;box-shadow:0 18px 50px #00000009}.step{margin-bottom:12px}
+h2{font-size:38px;line-height:1;letter-spacing:-.035em;margin:0 0 14px}h3{font-size:24px;letter-spacing:-.025em;margin:4px 0 8px}
+.choices{display:grid;gap:9px;margin-top:26px}.choice{border:1px solid #d8d2c9;background:#f8f6f2;border-radius:9px;padding:16px;text-align:left;font:inherit;display:flex;justify-content:space-between;cursor:pointer}.choice:hover,.choice.selected{border-color:#171717;background:#f0ede7}
+.feedback{margin-top:14px;padding:18px;border-radius:9px;background:#f1ece4}.feedback.good{background:#e8eee5}.feedback p{margin:6px 0 0;font-size:14px}
+.external,.mission{margin-top:18px;border:1px solid #d8d2c9;border-radius:14px;padding:24px;display:flex;justify-content:space-between;gap:20px;align-items:end;background:#eeeae3}.external button,.mission button{border:0;background:#171717;color:#fff;border-radius:8px;padding:12px 16px;font-weight:800;cursor:pointer;white-space:nowrap}.mission{display:block;background:#fff}.mission ol{padding-left:22px}.mission li{margin:8px 0}.mission button:disabled{opacity:.35;cursor:not-allowed}.return{font-size:13px}
+footer{border-top:1px solid #cfc9bf;padding-top:18px;font-size:10px;letter-spacing:.12em;color:#857e74}
+@media(max-width:800px){.top{display:block}.status{margin-top:18px}main{grid-template-columns:1fr;gap:25px}.nodes{grid-template-columns:repeat(2,1fr)}.node{padding:8px}.hero-card{padding:22px}.external{display:block}.external button{margin-top:16px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top"><div><div class="eyebrow">INTERACTIVE MOOC · 01 / 10</div><h1>IA como<br><em>sistema de trabajo.</em></h1><p>Aprende a convertir una tarea en un proceso humano + IA que pueda observarse, verificarse e iterarse.</p></div><div id="status" class="status">○ En progreso</div></header>
+<main>
+<section class="map"><div class="section-label">TU RECORRIDO</div><div id="nodes" class="nodes"></div></section>
+<section class="lesson"><div class="section-label">MISIÓN 01 · CAMBIAR EL MODELO MENTAL</div>
+<div class="hero-card"><div class="step">SITUACIÓN</div><h2>La IA no es el proceso.</h2><p>Te han pedido preparar un informe para dirección. Tienes documentos, datos y acceso a una IA. <strong>¿Qué haces primero?</strong></p><div id="choices" class="choices"></div><div id="feedback"></div></div>
+<div class="external"><div><div class="step">MISIÓN EXTERNA</div><h3>Ahora sal del curso.</h3><p>Utiliza tu propia IA para realizar esta tarea. El curso no ejecuta IA: te enseña el método y después te pide volver con lo aprendido.</p></div><button id="open">Abrir misión ↗</button></div>
+<div id="mission" class="mission" hidden><div class="step">EN TU PROPIA IA</div><h3>Hazlo en el mundo real.</h3><ol><li>Define el objetivo del informe en una frase.</li><li>Reúne el contexto y las restricciones relevantes.</li><li>Usa tu IA para generar una primera propuesta.</li><li>Observa qué falta y qué tienes que corregir.</li></ol><p class="return">Cuando vuelvas, reconstruye qué ocurrió.</p><button id="complete" disabled>He vuelto · continuar</button></div>
+</section>
+</main><footer>DETERMINISTIC BY DESIGN · TU IA OCURRE FUERA · EL APRENDIZAJE OCURRE AQUÍ</footer>
+</div>
+<script>
+const modules=["Cambiar el modelo mental","Dar contexto","Formular trabajo","Trabajar en ciclos","Investigar con IA","Crear con IA","Verificar","Experimentar","Delegar","Diseñar tu sistema"];
+const choices=[
+["context","Definir primero el objetivo y el contexto.","Antes de pedir trabajo a una IA necesitas definir qué problema estás resolviendo y qué información condiciona el resultado.",true],
+["prompt","Pedir directamente a la IA que lo haga.","Obtendrás una respuesta, pero todavía no has diseñado el proceso.",false],
+["template","Buscar una plantilla y empezar a rellenarla.","Una plantilla puede ayudar, pero todavía no has aclarado qué resultado necesitas ni cómo comprobarás su calidad.",false]
+];
+const nodes=document.querySelector("#nodes");
+modules.forEach((m,i)=>{const n=document.createElement("div");n.className="node"+(i===0?" active":"");n.innerHTML="<span>"+String(i+1).padStart(2,"0")+"</span><strong>"+m+"</strong>";nodes.appendChild(n)});
+const choicesEl=document.querySelector("#choices"),feedback=document.querySelector("#feedback"),complete=document.querySelector("#complete");
+let good=false;
+choices.forEach(([id,label,text,isGood])=>{const b=document.createElement("button");b.className="choice";b.innerHTML="<span>"+label+"</span><span>→</span>";b.onclick=()=>{document.querySelectorAll(".choice").forEach(x=>x.classList.remove("selected"));b.classList.add("selected");good=isGood;feedback.className="feedback"+(isGood?" good":"");feedback.innerHTML="<div class='feedback-title'>"+(isGood?"BUENA DECISIÓN":"OBSERVA LA CONSECUENCIA")+"</div><p>"+text+"</p>";complete.disabled=!good}});
+const mission=document.querySelector("#mission"),open=document.querySelector("#open");
+open.onclick=()=>{mission.hidden=!mission.hidden;open.textContent=mission.hidden?"Abrir misión ↗":"Cerrar"};
+complete.onclick=()=>{if(!good)return;localStorage.setItem("aws-m1","done");document.querySelector("#status").textContent="● Completado";complete.textContent="✓ Módulo completado"};
+if(localStorage.getItem("aws-m1")==="done"){document.querySelector("#status").textContent="● Completado";complete.textContent="✓ Módulo completado"}
+</script>
+</body>
+</html>
