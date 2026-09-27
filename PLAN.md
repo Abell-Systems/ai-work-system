@@ -122,11 +122,14 @@ Medir comprensión, transferencia, evidencia producida, criterio sobre autonomí
 ## Orden de implementación
 
 ### Sprint 1 — Evidencia + evaluación
-1. Crear modelo de evidencia.
-2. Añadir estado evidence_ready.
-3. Rediseñar pruebas hacia situaciones.
-4. Separar progreso de dominio.
-5. Mantener XP y badges actuales.
+**Estado: completado**
+1. [x] Crear modelo de evidencia.
+2. [x] Añadir estado evidence_ready.
+3. [x] Rediseñar pruebas hacia situaciones.
+4. [x] Separar progreso de dominio.
+5. [x] Mantener XP y badges actuales.
+6. [x] Exigir evidencia real, concreta y reflexiva.
+7. [x] Exigir justificación breve de las decisiones de dominio.
 
 ### Sprint 2 — Casos
 1. Crear 5 casos completos.
