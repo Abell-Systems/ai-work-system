@@ -90,13 +90,16 @@ const evidenceDefs=[
 ["Sistema completo","Resume proceso actual, sistema humano + IA y métrica antes/después."]
 ];
 const badgeDefs=[["🧭","Primer paso","Completa el módulo 1"],["🧱","Constructor de contexto","Completa el módulo 3"],["🔄","Iterador","Completa el módulo 4"],["🔎","Investigador","Completa el módulo 5"],["🛡️","Verificador","Completa el módulo 7"],["🧰","Diseñador de flujos","Completa el módulo 8"],["🤖","Constructor de agentes","Completa el módulo 9"],["🏁","Diseñador de sistemas","Completa los 10 módulos"]];
-function getXP(){return modules.reduce((n,_,i)=>n+(localStorage.getItem("aws-m"+(i+1))==="done"?100:0),0)}
-function updateGamification(){const done=modules.filter((_,i)=>localStorage.getItem("aws-m"+(i+1))==="done").length;const xp=getXP();const levels=[["Explorador",0],["Practicante",200],["Operador",500],["Delegador",800],["Diseñador de sistemas",1000]];let lv=levels[0];levels.forEach(x=>{if(xp>=x[1])lv=x});document.querySelector("#level").textContent="NIVEL "+(levels.indexOf(lv)+1)+" · "+lv[0].toUpperCase();document.querySelector("#status").textContent=done+" / 10 módulos";document.querySelector("#xp").textContent=xp+" XP";document.querySelector("#xpfill").style.width=Math.min(100,(xp/1000)*100)+"%";document.querySelector("#progressText").textContent=Math.round(done/10*100)+"%";document.querySelector("#progressFill").style.width=(done/10*100)+"%";document.querySelector("#badges").innerHTML=badgeDefs.map((b,i)=>{const unlocked=done>=[1,3,4,5,7,8,9,10][i];return "<div class='badge "+(unlocked?"":"locked")+"'><span>"+b[0]+"</span><div><strong>"+b[1]+"</strong><small>"+b[2]+"</small></div></div>"}).join("")}
+function getState(i){return localStorage.getItem("aws-state-"+(i+1))||"not_started"}
+function getXP(){return modules.reduce((n,_,i)=>n+(getState(i)==="mastered"?100:0),0)}
+function hasEvidence(i){return !!localStorage.getItem("aws-evidence-"+(i+1))}
+function hasPassed(i){return localStorage.getItem("aws-challenge-"+(i+1))==="passed"}
+function updateGamification(){const done=modules.filter((_,i)=>getState(i)==="mastered").length;const xp=getXP();const levels=[["Explorador",0],["Practicante",200],["Operador",500],["Delegador",800],["Diseñador de sistemas",1000]];let lv=levels[0];levels.forEach(x=>{if(xp>=x[1])lv=x});document.querySelector("#level").textContent="NIVEL "+(levels.indexOf(lv)+1)+" · "+lv[0].toUpperCase();document.querySelector("#status").textContent=done+" / 10 módulos";document.querySelector("#xp").textContent=xp+" XP";document.querySelector("#xpfill").style.width=Math.min(100,(xp/1000)*100)+"%";document.querySelector("#progressText").textContent=Math.round(done/10*100)+"%";document.querySelector("#progressFill").style.width=(done/10*100)+"%";document.querySelector("#badges").innerHTML=badgeDefs.map((b,i)=>{const unlocked=done>=[1,3,4,5,7,8,9,10][i];return "<div class='badge "+(unlocked?"":"locked")+"'><span>"+b[0]+"</span><div><strong>"+b[1]+"</strong><small>"+b[2]+"</small></div></div>"}).join("")}
 function renderChallenge(){
  const interactiveMode=current>=7;
  const challenge=document.querySelector("#challenge");
  if(interactiveMode){challenge.classList.add("simulation");}
-const ch=challenges[current];const box=document.querySelector("#challengeOptions");document.querySelector("#challengeTitle").textContent="Prueba de dominio · "+String(current+1).padStart(2,"0");document.querySelector("#challengePrompt").textContent=ch[0];box.innerHTML="";document.querySelector("#challengeFeedback").innerHTML="";document.querySelector("#challenge").classList.remove("locked");ch.slice(1).forEach((txt,i)=>{const b=document.createElement("button");b.className="choice";b.innerHTML="<span>"+txt+"</span><span>→</span>";b.onclick=()=>{box.querySelectorAll(".choice").forEach(x=>x.classList.remove("correct","wrong"));if(i===0){b.classList.add("correct");document.querySelector("#challengeFeedback").innerHTML="<div class='feedback good'><div class='feedback-title'>DOMINIO DEMOSTRADO · +100 XP</div><p>Has identificado el principio central del módulo. Ahora puedes desbloquear la recompensa.</p></div>";complete.disabled=false}else{b.classList.add("wrong");document.querySelector("#challengeFeedback").innerHTML="<div class='feedback'><div class='feedback-title'>VUELVE A PENSARLO</div><p>Busca la idea clave del módulo y vuelve a intentarlo.</p></div>";}};box.appendChild(b)});}
+const ch=challenges[current];const box=document.querySelector("#challengeOptions");document.querySelector("#challengeTitle").textContent="Prueba de dominio · "+String(current+1).padStart(2,"0");document.querySelector("#challengePrompt").textContent=ch[0];box.innerHTML="";document.querySelector("#challengeFeedback").innerHTML="";document.querySelector("#challenge").classList.remove("locked");ch.slice(1).forEach((txt,i)=>{const b=document.createElement("button");b.className="choice";b.innerHTML="<span>"+txt+"</span><span>→</span>";b.onclick=()=>{box.querySelectorAll(".choice").forEach(x=>x.classList.remove("correct","wrong"));if(i===0){b.classList.add("correct");localStorage.setItem("aws-challenge-"+(current+1),"passed");if(hasEvidence(current))localStorage.setItem("aws-state-"+(current+1),"evidence_ready");complete.disabled=!hasEvidence(current);document.querySelector("#challengeFeedback").innerHTML="<div class='feedback good'><div class='feedback-title'>DOMINIO DEMOSTRADO · +100 XP</div><p>Has identificado el principio central del módulo. Ahora puedes desbloquear la recompensa.</p></div>";complete.disabled=false}else{b.classList.add("wrong");document.querySelector("#challengeFeedback").innerHTML="<div class='feedback'><div class='feedback-title'>VUELVE A PENSARLO</div><p>Busca la idea clave del módulo y vuelve a intentarlo.</p></div>";}};box.appendChild(b)});}
 function render(){
  const m=modules[current]; document.querySelector(".eyebrow").textContent="INTERACTIVE MOOC · "+String(current+1).padStart(2,"0")+" / 10";
  document.querySelector("#moduleLabel").textContent="MÓDULO "+String(current+1).padStart(2,"0")+" · "+m.t.toUpperCase();
@@ -108,15 +111,19 @@ function render(){
  document.querySelector("#missionSteps").innerHTML=m.steps.map(x=>"<li>"+x+"</li>").join("");
  document.querySelector("#final").hidden=!m.final; mission.hidden=true; open.textContent="Abrir práctica ↗"; complete.disabled=true; practiced=false; renderChallenge();
 const ev=JSON.parse(localStorage.getItem("aws-evidence-"+(current+1))||"null");
+const state=getState(current);
+document.querySelector("#evidence").classList.toggle("mastered",state==="mastered");
 document.querySelector("#evidenceTitle").textContent=evidenceDefs[current][0];
 document.querySelector("#evidencePrompt").textContent=evidenceDefs[current][1];
 document.querySelector("#evidenceInput").value=ev?.text||"";
 document.querySelector("#evidenceStatus").textContent=ev?"✓ Evidencia guardada":"";
 document.querySelector("#saveEvidence").disabled=false;
+document.querySelector("#evidenceStatus").textContent=ev?(state==="mastered"?"✓ Dominio demostrado":"✓ Evidencia preparada"):"";
  interactive.innerHTML="";
  if(m.type==="scenario") renderScenario(); else renderContinue();
- document.querySelectorAll(".node").forEach((n,i)=>{n.classList.toggle("active",i===current);n.classList.toggle("done",localStorage.getItem("aws-m"+(i+1))==="done")}); updateGamification(); localStorage.setItem("aws-current",current);
- status.textContent=localStorage.getItem("aws-m"+(current+1))==="done"?"● Completado":"○ En progreso";
+ document.querySelectorAll(".node").forEach((n,i)=>{n.classList.toggle("active",i===current);n.classList.toggle("done",getState(i)==="mastered")}); updateGamification(); localStorage.setItem("aws-current",current);
+ const currentState=getState(current);
+status.textContent=currentState==="mastered"?"● Dominio demostrado":currentState==="evidence_ready"?"◐ Evidencia preparada":"○ En progreso";
 }
 function renderScenario(){
  const box=document.createElement("div");box.innerHTML="<div class='step'>SITUACIÓN</div><h3>Te han pedido preparar un informe para dirección. ¿Qué haces primero?</h3><div class='choices'></div><div id='feedback'></div>";interactive.appendChild(box);
@@ -124,7 +131,11 @@ function renderScenario(){
 }
 function renderContinue(){const p=document.createElement("div");p.className="feedback";p.innerHTML="<div class='feedback-title'>APLICACIÓN</div><p>La práctica de este módulo ocurre en tu propio trabajo. Abre la misión y vuelve cuando hayas probado el método.</p>";interactive.appendChild(p)}
 open.onclick=()=>{mission.hidden=!mission.hidden;open.textContent=mission.hidden?"Abrir práctica ↗":"Cerrar"};
-document.querySelector("#saveEvidence").onclick=()=>{const text=document.querySelector("#evidenceInput").value.trim();if(!text){document.querySelector("#evidenceStatus").textContent="Escribe algo antes de guardar.";return}localStorage.setItem("aws-evidence-"+(current+1),JSON.stringify({version:1,module:current+1,text,savedAt:new Date().toISOString()}));document.querySelector("#evidenceStatus").textContent="✓ Evidencia guardada";complete.disabled=false;status.textContent="◐ Evidencia preparada"};
-complete.onclick=()=>{if(complete.disabled)return;localStorage.setItem("aws-m"+(current+1),"done");localStorage.setItem("aws-challenge-"+(current+1),"passed");complete.textContent="✓ Misión completada · +100 XP";complete.disabled=true;document.querySelectorAll(".node")[current].classList.add("done");updateGamification();if(current<9){current++;setTimeout(render,450)}};
+document.querySelector("#saveEvidence").onclick=()=>{const text=document.querySelector("#evidenceInput").value.trim();if(!text){document.querySelector("#evidenceStatus").textContent="Escribe algo antes de guardar.";return}localStorage.setItem("aws-evidence-"+(current+1),JSON.stringify({version:1,module:current+1,text,savedAt:new Date().toISOString()}));document.querySelector("#evidenceStatus").textContent="✓ Evidencia preparada";
+localStorage.setItem("aws-state-"+(current+1),"evidence_ready");
+complete.disabled=!hasPassed(current);
+status.textContent="◐ Evidencia preparada";
+updateGamification();};
+complete.onclick=()=>{if(complete.disabled)return;localStorage.setItem("aws-state-"+(current+1),"mastered");localStorage.setItem("aws-m"+(current+1),"done");complete.textContent="✓ Dominio demostrado · +100 XP";complete.disabled=true;document.querySelectorAll(".node")[current].classList.add("done");updateGamification();if(current<9){current++;setTimeout(render,450)}};
 render();
 </script></body></html>
