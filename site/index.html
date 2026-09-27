@@ -119,6 +119,8 @@ document.querySelector("#evidenceInput").value=ev?.text||"";
 document.querySelector("#evidenceStatus").textContent=ev?"✓ Evidencia guardada":"";
 document.querySelector("#saveEvidence").disabled=false;
 document.querySelector("#evidenceStatus").textContent=ev?(state==="mastered"?"✓ Dominio demostrado":"✓ Evidencia preparada"):"";
+complete.disabled=!(hasEvidence(current)&&hasPassed(current));
+complete.textContent=state==="mastered"?"✓ Dominio demostrado · +100 XP":"He vuelto · continuar";
  interactive.innerHTML="";
  if(m.type==="scenario") renderScenario(); else renderContinue();
  document.querySelectorAll(".node").forEach((n,i)=>{n.classList.toggle("active",i===current);n.classList.toggle("done",getState(i)==="mastered")}); updateGamification(); localStorage.setItem("aws-current",current);
