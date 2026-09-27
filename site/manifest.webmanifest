@@ -1,0 +1,15 @@
+{
+  "name": "IA como sistema de trabajo",
+  "short_name": "IA Work System",
+  "description": "Curso práctico para incorporar IA y agentes al trabajo sin programar.",
+  "lang": "es",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f1eb",
+  "theme_color": "#171717",
+  "icons": [
+    {"src":"icon-192.svg","sizes":"192x192","type":"image/svg+xml","purpose":"any maskable"},
+    {"src":"icon-512.svg","sizes":"512x512","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}
