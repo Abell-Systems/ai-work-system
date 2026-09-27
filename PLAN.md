@@ -132,10 +132,16 @@ Medir comprensión, transferencia, evidencia producida, criterio sobre autonomí
 7. [x] Exigir justificación breve de las decisiones de dominio.
 
 ### Sprint 2 — Casos
-1. Crear 5 casos completos.
-2. Asociar casos a módulos.
-3. Permitir elegir un caso o tarea propia.
-4. Reutilizar patrones de evaluación.
+**Estado: en curso — recorrido secuencial implementado**
+
+1. [x] Crear 5 casos completos.
+2. [x] Asociar casos a módulos.
+3. [x] Permitir elegir un caso o tarea propia.
+4. [x] Reutilizar patrones de evaluación.
+5. [x] Convertir las pruebas en un recorrido de 10 etapas por caso.
+6. [x] Persistir decisiones y consecuencias por caso.
+7. [x] Hacer que cada etapa muestre cómo la decisión anterior condiciona la siguiente.
+8. [ ] Validar los recorridos con alumnos no técnicos.
 
 ### Sprint 3 — Agentes + seguridad
 1. Refinar automatización vs agente.
