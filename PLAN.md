@@ -1,302 +1,177 @@
-# Programa educativo — IA como sistema de trabajo
+# Roadmap — IA como sistema de trabajo
 
-## Propósito
+## Norte del producto
 
 Formar a personas no técnicas para incorporar IA de forma práctica, segura y progresiva en su trabajo diario.
 
-El curso no enseña una herramienta concreta. Enseña a **detectar trabajo delegable y convertirlo progresivamente en sistemas humano + IA**.
-
-> Resultado final: cada alumno termina con un pequeño sistema de trabajo aumentado por IA y con un primer agente sencillo aplicado a una tarea real.
-
-## Público objetivo
-
-Personas que:
-- no programan o no necesitan programar para realizar su trabajo;
-- utilizan documentos, correo, reuniones, hojas de cálculo, investigación, atención al cliente, gestión o creación de contenido;
-- quieren pasar de «usar IA para preguntar cosas» a **trabajar con IA**;
-- necesitan entender los agentes sin convertirse en técnicos.
-
-## Principios pedagógicos
-
-1. **Cero prerequisitos técnicos.** Los conceptos técnicos se traducen a lenguaje de trabajo.
-2. **Aprender haciendo.** Cada módulo produce un resultado utilizable.
-3. **La IA del alumno ocurre fuera del curso.** El curso enseña el método y proporciona prácticas; el alumno utiliza su herramienta de IA habitual.
-4. **Herramienta-agnóstico.** ChatGPT, Claude, Gemini, Copilot u otras herramientas pueden servir para las prácticas.
-5. **Progresión de autonomía.** Asistente → propuesta → preparación → ejecución supervisada → ejecución con aprobaciones.
-6. **Human-in-the-loop.** El alumno aprende dónde debe revisar, aprobar o detener a la IA.
-7. **Verificación obligatoria.** Generar no equivale a acertar.
-8. **Trabajo por ciclos.** Pedir → observar → corregir → volver a ejecutar → verificar.
-9. **Transferencia al trabajo real.** Los ejercicios parten de tareas reales del alumno.
-10. **Diseñar sistemas, no coleccionar prompts.**
-
-## Resultados de aprendizaje
-
-Al terminar, el alumno podrá:
-
-- describir un problema de trabajo en términos que una IA pueda utilizar;
-- proporcionar contexto, restricciones y criterios de calidad;
-- dividir trabajo complejo en pasos manejables;
-- trabajar iterativamente con IA;
-- utilizar IA para investigar, crear y verificar;
-- identificar tareas apropiadas para delegación;
-- distinguir entre asistencia y ejecución autónoma;
-- diseñar un flujo sencillo de automatización sin programar;
-- explicar qué es un agente y cuándo utilizarlo;
-- definir objetivo, contexto, herramientas, límites y aprobaciones de un agente;
-- verificar resultados y gestionar errores;
-- medir si un flujo con IA realmente mejora el trabajo;
-- construir un primer sistema humano + IA aplicable a su puesto.
-
-## Programa
-
-### 01 — Cambia cómo ves la IA
-
-**Idea:** la IA no es el proceso; es un componente del proceso.
-
-Aprender:
-- diferencia entre preguntar y delegar;
-- objetivo antes que prompt;
-- IA como colaborador, no como oráculo.
-
-Práctica:
-- elegir una tarea real;
-- definir su objetivo en una frase;
-- identificar qué información necesita la IA.
-
-**Evidencia:** ficha de una tarea preparada para trabajar con IA.
-
----
-
-### 02 — Dale contexto
-
-**Idea:** la calidad depende de lo que la IA sabe y de lo que no sabe.
-
-Aprender:
-- contexto;
-- restricciones;
-- ejemplos;
-- información relevante frente a ruido;
-- criterios de éxito.
-
-Práctica:
-- transformar una petición ambigua en una petición contextualizada.
-
-**Evidencia:** briefing listo para IA.
-
----
-
-### 03 — Formula el trabajo
-
-**Idea:** una buena petición describe trabajo, no magia.
-
-Aprender:
-- objetivo;
-- resultado esperado;
-- formato;
-- restricciones;
-- criterios de calidad.
-
-Práctica:
-- convertir una tarea real en una especificación sencilla.
-
-**Evidencia:** encargo de trabajo para IA.
-
----
-
-### 04 — Trabaja en ciclos
-
-**Idea:** la primera respuesta es un punto de partida.
-
-Aprender:
-- pedir;
-- observar;
-- corregir;
-- volver a ejecutar;
-- verificar.
-
-Práctica:
-- comparar una interacción de un solo intento con una interacción iterativa.
-
-**Evidencia:** registro breve de iteraciones y mejoras.
-
----
-
-### 05 — Investiga con IA
-
-**Idea:** investigar no es pedir un resumen.
-
-Aprender:
-- formular preguntas;
-- buscar información;
-- comparar fuentes;
-- detectar contradicciones;
-- separar hechos de inferencias;
-- conservar trazabilidad.
-
-Práctica:
-- investigar una cuestión real del trabajo y producir una síntesis verificable.
-
-**Evidencia:** briefing de investigación con fuentes y dudas abiertas.
-
----
-
-### 06 — Crea con IA
-
-**Idea:** la IA puede acelerar la producción sin sustituir el criterio.
-
-Aprender:
-- primeros borradores;
-- transformación de documentos;
-- alternativas;
-- revisión;
-- criterios de calidad.
-
-Práctica:
-- producir un artefacto profesional real: email, informe, propuesta, procedimiento, presentación o equivalente.
-
-**Evidencia:** versión inicial + versión revisada.
-
----
-
-### 07 — Verifica
-
-**Idea:** una respuesta convincente puede ser incorrecta.
-
-Aprender:
-- qué comprobar;
-- cómo comprobarlo;
-- cuándo pedir fuentes;
-- pruebas de consistencia;
-- revisión humana;
-- límites de confianza.
-
-Práctica:
-- encontrar y corregir errores deliberadamente introducidos en un resultado de IA.
-
-**Evidencia:** checklist de verificación reutilizable.
-
----
-
-### 08 — Dale herramientas
-
-**Idea:** el salto importante es pasar de generar texto a ejecutar trabajo.
-
-Aprender, sin programación:
-- disparador;
-- pasos;
-- herramientas;
-- entradas y salidas;
-- decisiones;
-- permisos;
-- resultado.
-
-Práctica:
-- dibujar un flujo de una tarea repetitiva.
-
-**Evidencia:** diseño de workflow humano + IA.
-
----
-
-### 09 — Construye tu primer agente
-
-**Idea:** un agente es una IA con un objetivo, unas reglas y unas herramientas que puede ejecutar varios pasos.
-
-Aprender:
-- qué es y qué no es un agente;
-- niveles de autonomía;
-- herramientas;
-- límites;
-- aprobaciones;
-- comportamiento ante errores.
-
-Práctica:
-- construir/configurar un agente sencillo con una herramienta accesible al alumno;
-- mantener aprobación humana antes de acciones críticas.
-
-**Evidencia:** agente funcional o prototipo reproducible.
-
----
-
-### 10 — Diseña tu sistema de trabajo
-
-**Idea:** el objetivo no es tener un agente; es mejorar un sistema de trabajo.
-
-Aprender:
-- seleccionar procesos;
-- combinar IA, herramientas y persona;
-- definir controles;
-- medir resultados;
-- decidir qué delegar y qué conservar.
-
-Práctica final:
-- diseñar un sistema completo para una tarea real del puesto del alumno.
-
-**Evidencia:** sistema humano + IA documentado y medido.
-
-## Escala de autonomía
-
-El curso utiliza una escala común:
-
-| Nivel | Papel de la IA |
+> El alumno debe demostrar que puede rediseñar una tarea real de su trabajo como un sistema humano + IA, con controles y una mejora observable.
+
+Regla de evolución: menos contenido consumido → más capacidad demostrada.
+
+## Fase 0 — Base del MVP
+**Estado: completado**
+- [x] Curso estático y determinista.
+- [x] 10 módulos.
+- [x] Progresión asistente → sistema.
+- [x] Prácticas sobre trabajo real.
+- [x] Verificación y control humano.
+- [x] Gamificación básica.
+- [x] PWA instalable.
+- [x] Persistencia local mediante localStorage.
+- [x] Funcionamiento sin APIs de IA.
+- [x] Despliegue estático.
+
+## Fase 1 — Evidencia de aprendizaje
+**Prioridad: P0**
+
+Objetivo: dejar de considerar que módulo completado equivale a competencia adquirida.
+
+| Módulo | Evidencia |
 |---|---|
-| 0 | Responde |
-| 1 | Propone |
-| 2 | Prepara |
-| 3 | Ejecuta con supervisión |
-| 4 | Ejecuta y solicita aprobación en puntos críticos |
+| 01 | Ficha de tarea |
+| 02 | Briefing contextualizado |
+| 03 | Encargo ejecutable |
+| 04 | Registro de iteraciones |
+| 05 | Investigación trazable |
+| 06 | Artefacto inicial + revisado |
+| 07 | Checklist de verificación |
+| 08 | Workflow humano + IA |
+| 09 | Especificación de agente |
+| 10 | Sistema completo medido |
 
-El alumno debe elegir conscientemente el nivel adecuado para cada tarea.
+Cada módulo debe permitir registrar que la evidencia existe y progresivamente conservar una versión estructurada.
 
-## Seguridad mínima
+### Evaluación situacional
+Las pruebas deben comprobar identificación del problema, elección de autonomía, controles, verificación, errores y justificación. No se evalúa velocidad.
 
-Antes de permitir ejecución, el alumno debe saber identificar:
+### Estados de aprendizaje
+- not_started
+- in_progress
+- evidence_ready
+- mastered
 
-- información confidencial;
-- datos personales;
-- credenciales y secretos;
-- propiedad intelectual;
-- acciones irreversibles;
-- acciones externas que requieren aprobación.
+## Fase 2 — Casos de trabajo completos
+**Prioridad: P1**
 
-## Proyecto final
+Crear inicialmente 5 casos reutilizables: Administración/operaciones, Ventas/atención al cliente, Marketing/contenidos, RRHH y Dirección/análisis.
 
-El alumno selecciona una tarea real de su trabajo y entrega:
+Cada caso recorre: tarea → contexto → encargo → iteración → verificación → workflow → autonomía → sistema.
 
-1. objetivo;
-2. contexto;
-3. proceso actual;
-4. proceso humano + IA;
-5. herramientas;
-6. nivel de autonomía;
-7. puntos de aprobación;
-8. criterios de calidad;
-9. plan de verificación;
-10. métrica antes/después.
+## Fase 3 — Modelo de agentes más preciso
+**Prioridad: P1**
 
-El proyecto debe responder a una pregunta sencilla:
+Introducir una distinción simple:
+- Automatización: las reglas determinan los pasos.
+- Agente: la IA puede decidir qué paso ejecutar a continuación para alcanzar un objetivo dentro de unas reglas y permisos.
 
-> **¿Qué parte de mi trabajo puedo delegar a IA sin perder el control sobre el resultado?**
+El módulo 9 debe enseñar objetivo, contexto, reglas, herramientas, decisiones, permisos, aprobaciones, errores y nivel de autonomía.
 
-## Criterios de finalización
+## Fase 4 — Gamificación basada en competencias
+**Prioridad: P1**
 
-Un alumno completa el curso cuando puede:
+XP representa avance. Las insignias representan competencias demostradas.
 
-- ejecutar las prácticas de los módulos;
-- explicar sus decisiones;
-- demostrar un flujo humano + IA;
-- demostrar cómo lo verifica;
-- identificar sus límites;
-- presentar su sistema final.
+Competencias: Primer paso, Constructor de contexto, Constructor de encargos, Iterador, Investigador, Creador, Verificador, Diseñador de workflows, Diseñador de agentes y Diseñador de sistemas.
 
-## Fuera de alcance
+Una insignia no debe depender solamente de leer contenido: debe depender de evidencia o dominio.
 
-El curso no pretende enseñar:
-- programación;
-- desarrollo de modelos;
-- APIs;
-- arquitectura de agentes;
-- machine learning;
-- prompt engineering avanzado;
-- una herramienta concreta como única solución.
+## Fase 5 — El propio curso como ejemplo
+**Prioridad: P1**
 
-Esas materias pueden convertirse posteriormente en itinerarios avanzados.
+Mostrar explícitamente que el curso también es un sistema: objetivo → contexto → IA → herramientas → decisión → verificación → resultado.
+
+## Fase 6 — Personalización ligera
+**Prioridad: P2**
+
+Preguntar al inicio por contexto profesional: Administración, Ventas, Marketing, RRHH, Educación, Operaciones, Dirección u Otro.
+
+Mantener el mismo modelo pedagógico y adaptar ejemplos, casos, lenguaje y tareas sugeridas.
+
+## Fase 7 — Seguridad como práctica
+**Prioridad: P1**
+
+Convertir seguridad en decisiones situacionales sobre datos personales, información confidencial, secretos, propiedad intelectual, acciones externas, acciones irreversibles, permisos y aprobación humana.
+
+## Fase 8 — Persistencia y portabilidad
+**Prioridad: P2**
+
+Mantener inicialmente el modelo local. Añadir exportar/importar progreso y evidencias mediante JSON versionado.
+
+## Fase 9 — Arquitectura del contenido
+**Prioridad: P2**
+
+Separar contenido educativo del runtime.
+
+content/ → modules/, challenges/, cases/, badges/
+src/ → learning/, assessment/, progress/, gamification/
+
+El contenido debe poder evolucionar sin modificar la lógica de la aplicación.
+
+## Fase 10 — UX móvil y accesibilidad
+**Prioridad: P2**
+
+Validar en navegador real, especialmente móvil. Priorizar una acción principal por pantalla, menor densidad, navegación clara, teclado/foco, contraste, labels accesibles y feedback comprensible.
+
+## Fase 11 — Validación educativa real
+**Prioridad: P0 después de la siguiente iteración**
+
+Probar con 5–10 personas no técnicas.
+
+Medir comprensión, transferencia, evidencia producida, criterio sobre autonomía/controles, mejora real y fricción.
+
+## Orden de implementación
+
+### Sprint 1 — Evidencia + evaluación
+1. Crear modelo de evidencia.
+2. Añadir estado evidence_ready.
+3. Rediseñar pruebas hacia situaciones.
+4. Separar progreso de dominio.
+5. Mantener XP y badges actuales.
+
+### Sprint 2 — Casos
+1. Crear 5 casos completos.
+2. Asociar casos a módulos.
+3. Permitir elegir un caso o tarea propia.
+4. Reutilizar patrones de evaluación.
+
+### Sprint 3 — Agentes + seguridad
+1. Refinar automatización vs agente.
+2. Añadir decisiones de permisos.
+3. Añadir escenarios de aprobación.
+4. Añadir escenarios de error.
+
+### Sprint 4 — Competencias
+1. Insignias por dominio.
+2. Evidencias asociadas.
+3. Panel de competencias.
+4. Proyecto final como integración.
+
+### Sprint 5 — Personalización + portabilidad
+1. Perfil profesional ligero.
+2. Ejemplos adaptados.
+3. Export/import JSON.
+4. Evidencias exportables.
+
+### Sprint 6 — Arquitectura + UX
+1. Separar contenido.
+2. Tests.
+3. Accesibilidad.
+4. Validación móvil.
+5. Instrumentación mínima para pruebas educativas.
+
+### Sprint 7 — Validación
+1. Test con 5–10 alumnos.
+2. Recoger resultados.
+3. Identificar bloqueos.
+4. Revisar módulos.
+5. Volver a medir.
+
+## Criterio de éxito
+
+El curso se considera validado cuando un alumno no técnico puede seleccionar una tarea real, describirla, trabajar con IA iterativamente, verificarla, diseñar un workflow, decidir autonomía segura, definir controles, explicar errores, medir una mejora y reproducir el sistema en su trabajo.
+
+## Fuera de alcance por ahora
+
+No añadir hasta que la validación lo justifique: chatbot integrado, APIs de IA, agentes ejecutados por el curso, rankings, rachas, red social, backend complejo, certificación avanzada o dependencia de una herramienta comercial.
+
+La tecnología debe seguir siendo secundaria respecto al aprendizaje.
