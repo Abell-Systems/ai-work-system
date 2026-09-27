@@ -110,11 +110,36 @@ function updateGamification(){const done=modules.filter((_,i)=>getState(i)==="ma
 function getCase(){return cases.find(c=>c.id===localStorage.getItem("aws-case"))||cases[0]}
 function renderCasePicker(){
  const selected=getCase(),box=document.querySelector("#caseOptions"),detail=document.querySelector("#caseDetail");box.innerHTML="";
- cases.forEach(c=>{const b=document.createElement("button");b.className="case-option"+(c.id===selected.id?" active":"");b.innerHTML="<strong>"+c.short+"</strong><small>"+c.name+"</small>";b.onclick=()=>{localStorage.setItem("aws-case",c.id);renderCasePicker()};box.appendChild(b)});
+ cases.forEach(c=>{const b=document.createElement("button");b.className="case-option"+(c.id===selected.id?" active":"");b.innerHTML="<strong>"+c.short+"</strong><small>"+c.name+"</small>";b.onclick=()=>{localStorage.setItem("aws-case",c.id);renderCasePicker();renderChallenge()};box.appendChild(b)});
  detail.innerHTML="<strong>"+selected.name+":</strong> "+selected.task+" <br><span>"+selected.objective+"</span>";
 }
+function getCaseChallenge(moduleIndex){
+ const c=getCase();
+ const variants={
+  admin:[
+   ["Te llega una petición interna con datos de empleados. ¿Qué haces antes de usar IA?",["Pegar toda la información en cualquier herramienta.","Separar los datos sensibles y definir qué necesita realmente la IA.","Reenviar la petición a otra persona sin analizarla."],1,"Minimizar datos y definir el uso antes de procesarlos reduce exposición innecesaria."]
+  ],
+  sales:[
+   ["La IA prepara una respuesta comercial usando información de un cliente. ¿Qué control mantienes?",["Enviar automáticamente cualquier respuesta.","Revisar datos, tono y promesas antes del envío.","Dejar que el agente improvise descuentos si cree que ayudará."],1,"Una respuesta externa puede comprometer datos, relación comercial o condiciones; la aprobación debe cubrir esos riesgos."]
+  ],
+  marketing:[
+   ["La IA genera una pieza de contenido a partir de documentación de producto. ¿Qué verificas?",["Publicarla si el texto suena convincente.","Contrastar afirmaciones del producto y revisar el resultado frente a la guía editorial.","Generar más versiones hasta encontrar una que parezca correcta."],1,"El contenido puede amplificar errores; las afirmaciones de producto y los criterios editoriales necesitan verificación."]
+  ],
+  hr:[
+   ["Quieres automatizar una respuesta de RRHH que contiene información personal. ¿Qué decisión tomas?",["Dar acceso completo al agente porque así trabaja más rápido.","Limitar los datos y permisos, y mantener revisión humana en casos sensibles.","Copiar todos los expedientes en el contexto para que la IA tenga más información."],1,"En RRHH el control de datos personales y las excepciones sensibles condicionan qué puede automatizarse."]
+  ],
+  direction:[
+   ["La IA resume información para una decisión de dirección. ¿Qué haces antes de presentar el briefing?",["Presentarlo como conclusión objetiva.","Separar hechos, inferencias y dudas, y comprobar las fuentes relevantes.","Elegir el resumen que mejor encaje con la decisión prevista."],1,"Un briefing para decidir debe hacer visibles evidencia, interpretación e incertidumbre, no ocultarlas."]
+  ],
+  own:[
+   ["Has elegido una tarea propia. ¿Cuál es el primer paso?",["Automatizarla completa desde el principio.","Definir objetivo, contexto, riesgo y qué resultado demostraría una mejora.","Elegir primero una herramienta de IA concreta."],1,"El método empieza por el trabajo y sus criterios, no por la herramienta."]
+  ]
+ };
+ const v=variants[c.id]?.[0]||variants.own[0];
+ return {prompt:v[0],options:v[1],correct:v[2],feedback:v[3]};
+}
 function renderChallenge(){
- const ch=challenges[current],box=document.querySelector("#challengeOptions"),feedback=document.querySelector("#challengeFeedback"),saved=localStorage.getItem("aws-assessment-"+(current+1))||"";
+ const base=challenges[current],caseCh=getCaseChallenge(current),ch=current>=0?{prompt:current===0?caseCh.prompt:base.prompt,options:current===0?caseCh.options:base.options,correct:current===0?caseCh.correct:base.correct,feedback:current===0?caseCh.feedback:base.feedback}:base,box=document.querySelector("#challengeOptions"),feedback=document.querySelector("#challengeFeedback"),saved=localStorage.getItem("aws-assessment-"+(current+1))||"";
  document.querySelector("#challengeTitle").textContent="Prueba de dominio · "+String(current+1).padStart(2,"0");
  document.querySelector("#challengePrompt").textContent=ch.prompt;box.innerHTML="";feedback.innerHTML="";
  ch.options.forEach((txt,i)=>{const b=document.createElement("button");b.className="choice";b.innerHTML="<span>"+txt+"</span><span>→</span>";b.onclick=()=>{
