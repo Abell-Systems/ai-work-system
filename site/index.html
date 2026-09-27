@@ -143,7 +143,7 @@ function getCasePractice(m,moduleIndex){
 function getCase(){return cases.find(c=>c.id===localStorage.getItem("aws-case"))||cases[0]}
 function renderCasePicker(){
  const selected=getCase(),box=document.querySelector("#caseOptions"),detail=document.querySelector("#caseDetail");box.innerHTML="";
- cases.forEach(c=>{const b=document.createElement("button");b.className="case-option"+(c.id===selected.id?" active":"");b.innerHTML="<strong>"+c.short+"</strong><small>"+c.name+"</small>";b.onclick=()=>{localStorage.setItem("aws-case",c.id);renderCasePicker();renderChallenge();syncCompletion()};box.appendChild(b)});
+ cases.forEach(c=>{const b=document.createElement("button");b.className="case-option"+(c.id===selected.id?" active":"");b.innerHTML="<strong>"+c.short+"</strong><small>"+c.name+"</small>";b.onclick=()=>{localStorage.setItem("aws-case",c.id);render()};box.appendChild(b)});
  detail.innerHTML="<strong>"+selected.name+":</strong> "+selected.task+" <br><span>"+selected.objective+"</span>";
 }
 function getJourneyChallenge(moduleIndex){
