@@ -20,13 +20,13 @@ main{display:grid;grid-template-columns:280px 1fr;gap:56px;padding:42px 0}
 .step{margin-bottom:12px}h2{font-size:38px;line-height:1;letter-spacing:-.035em;margin:0 0 14px}h3{font-size:24px;letter-spacing:-.025em;margin:4px 0 8px}
 .choices{display:grid;gap:9px;margin-top:26px}.choice{border:1px solid #d8d2c9;background:#f8f6f2;border-radius:9px;padding:16px;text-align:left;font:inherit;display:flex;justify-content:space-between;cursor:pointer}.choice:hover,.choice.selected{border-color:#171717;background:#f0ede7}
 .feedback{margin-top:14px;padding:18px;border-radius:9px;background:#f1ece4}.feedback.good{background:#e8eee5}.feedback p{margin:6px 0 0;font-size:14px}
-.external,.mission{margin-top:18px;border:1px solid #d8d2c9;border-radius:14px;padding:24px;display:flex;justify-content:space-between;gap:20px;align-items:end;background:#eeeae3}
+.case-picker{margin-top:18px;border:1px solid #d8d2c9;border-radius:14px;padding:20px;background:#f8f6f2}.case-options{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px}.case-option{border:1px solid #d8d2c9;background:#fff;border-radius:8px;padding:10px;text-align:left;font:inherit;cursor:pointer}.case-option.active{border-color:#171717;background:#171717;color:#fff}.case-option strong{display:block;font-size:12px}.case-option small{display:block;margin-top:3px;font-size:10px;opacity:.7}.case-detail{margin-top:12px;font-size:13px;color:#625e57}.external,.mission{margin-top:18px;border:1px solid #d8d2c9;border-radius:14px;padding:24px;display:flex;justify-content:space-between;gap:20px;align-items:end;background:#eeeae3}
 .external button,.mission button{border:0;background:#171717;color:#fff;border-radius:8px;padding:12px 16px;font-weight:800;cursor:pointer;white-space:nowrap}.mission{display:block;background:#fff}.mission ol{padding-left:22px}.mission li{margin:8px 0}.mission button:disabled{opacity:.35;cursor:not-allowed}.return{font-size:13px}
 .module-meta{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0}.pill{border:1px solid #d8d2c9;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:800;color:#6d675f}
 .objectives{margin:24px 0 0;padding:20px;border-top:1px solid #e2ddd5}.objectives ul{margin:10px 0;padding-left:20px}.objectives li{margin:7px 0;color:#625e57}
 .final{margin-top:18px;border:1px solid #d8d2c9;border-radius:14px;padding:24px;background:#171717;color:#fff}.final p{color:#d0cbc2}.final strong{color:#fff}
 footer{border-top:1px solid #cfc9bf;padding-top:18px;font-size:10px;letter-spacing:.12em;color:#857e74}
-@media(max-width:800px){.top{display:block}.hud{text-align:left;margin-top:18px}.status{margin-top:4px}main{grid-template-columns:1fr;gap:25px}.nodes{grid-template-columns:repeat(2,1fr)}.node{padding:8px}.hero-card{padding:22px}.external{display:block}.external button{margin-top:16px}}
+@media(max-width:800px){.case-options{grid-template-columns:repeat(2,1fr)}.top{display:block}.hud{text-align:left;margin-top:18px}.status{margin-top:4px}main{grid-template-columns:1fr;gap:25px}.nodes{grid-template-columns:repeat(2,1fr)}.node{padding:8px}.hero-card{padding:22px}.external{display:block}.external button{margin-top:16px}}
 </style>
 </head>
 <body><div class="app">
@@ -40,6 +40,7 @@ footer{border-top:1px solid #cfc9bf;padding-top:18px;font-size:10px;letter-spaci
 <textarea id="evidenceInput" rows="5" placeholder="Escribe aquí la evidencia de este módulo..."></textarea>
 <div class="evidence-checks"><label class="evidence-check"><input type="checkbox" id="evidenceReal"> Es una tarea o caso real, no un ejemplo inventado.</label><label class="evidence-check"><input type="checkbox" id="evidenceConcrete"> Incluye algo concreto que hice, produje, comprobé o cambié.</label><label class="evidence-check"><input type="checkbox" id="evidenceLearning"> Deja visible qué aprendí, mejoré o decidí de otra manera.</label></div><div class="evidence-actions"><button id="saveEvidence">Guardar evidencia</button><span id="evidenceStatus" class="return"></span></div>
 </div><div id="challenge" class="challenge"><div class="step">PRUEBA DE DOMINIO</div><h3 id="challengeTitle">Demuestra lo aprendido.</h3><p id="challengePrompt"></p><div id="challengeOptions" class="choices"></div><div id="challengeFeedback"></div></div></div>
+<div id="casePicker" class="case-picker"><div class="step">ELIGE UN CASO DE PRÁCTICA</div><p>Usa un caso guiado para aprender el patrón o aplica directamente el método a una tarea tuya.</p><div id="caseOptions" class="case-options"></div><div id="caseDetail" class="case-detail"></div></div>
 <div id="external" class="external"><div><div class="step">PRÁCTICA REAL</div><h3 id="practiceTitle">Llévalo a tu trabajo.</h3><p id="practiceText">Elige una tarea real y utiliza tu propia IA. El curso enseña el método; la ejecución ocurre fuera.</p></div><button id="open">Abrir práctica ↗</button></div>
 <div id="mission" class="mission" hidden><div class="step">EN TU PROPIA IA</div><h3 id="missionTitle">Primera práctica</h3><ol id="missionSteps"></ol><p class="return">Vuelve al curso cuando hayas hecho la práctica.</p><button id="complete" disabled>He vuelto · continuar</button></div>
 <div id="final" class="final" hidden><div class="step" style="color:#b7b0a5">PROYECTO FINAL</div><h3 style="color:#fff">Diseña tu sistema humano + IA.</h3><p>Selecciona una tarea real y documenta objetivo, contexto, proceso, herramientas, autonomía, aprobaciones, verificación y métrica antes/después.</p><p><strong>Pregunta guía:</strong> ¿qué parte de mi trabajo puedo delegar a IA sin perder el control sobre el resultado?</p></div>
@@ -60,6 +61,15 @@ const modules=[
 {t:"Diseña tu sistema",idea:"El objetivo no es tener un agente; es mejorar un sistema de trabajo.",intro:"Combina persona, IA, herramientas y controles en un proceso medible.",learn:["Seleccionar procesos delegables","Diseñar controles","Medir antes y después"],practice:"Construye tu proyecto final.",steps:["Documenta el proceso actual.","Diseña el proceso humano + IA.","Define herramientas, autonomía y aprobaciones.","Define verificación y manejo de errores.","Mide tiempo, errores, pasos manuales o calidad antes y después."],final:true}
 ];
 const nodes=document.querySelector("#nodes"),status=document.querySelector("#status"),complete=document.querySelector("#complete"),mission=document.querySelector("#mission"),open=document.querySelector("#open"),interactive=document.querySelector("#interactive");
+const cases=[
+{id:"admin",name:"Administración",short:"Admin",task:"Preparar y responder solicitudes internas repetitivas.",objective:"Reducir tiempo de respuesta sin perder control sobre datos y excepciones."},
+{id:"sales",name:"Ventas / clientes",short:"Ventas",task:"Preparar respuestas y seguimientos a clientes a partir de información existente.",objective:"Acelerar preparación manteniendo tono, datos correctos y aprobación humana."},
+{id:"marketing",name:"Marketing / contenidos",short:"Marketing",task:"Convertir información de producto en contenidos adaptados a distintos canales.",objective:"Aumentar producción sin perder coherencia, precisión ni revisión editorial."},
+{id:"hr",name:"RRHH",short:"RRHH",task:"Preparar documentación o respuestas sobre procesos internos de personas.",objective:"Reducir trabajo administrativo protegiendo datos personales y puntos sensibles."},
+{id:"direction",name:"Dirección / análisis",short:"Dirección",task:"Convertir información dispersa en un briefing para apoyar una decisión.",objective:"Reducir tiempo de análisis haciendo explícitas fuentes, incertidumbres y controles."},
+{id:"own",name:"Mi propia tarea",short:"Propia",task:"Elige una tarea real de tu trabajo.",objective:"Aplicar el método a un proceso que realmente quieras mejorar."}
+];
+
 let current=Number(localStorage.getItem("aws-current")||0), practiced=false;
 let deferredInstall=null;
 window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredInstall=e;document.querySelector("#install").hidden=false});
@@ -97,6 +107,12 @@ function hasEvidenceChecks(i){const c=JSON.parse(localStorage.getItem("aws-evide
 function hasPassed(i){return localStorage.getItem("aws-challenge-"+(i+1))==="passed"}
 function hasRationale(i){return (localStorage.getItem("aws-assessment-"+(i+1))||"").trim().length>=20}
 function updateGamification(){const done=modules.filter((_,i)=>getState(i)==="mastered").length;const xp=getXP();const levels=[["Explorador",0],["Practicante",200],["Operador",500],["Delegador",800],["Diseñador de sistemas",1000]];let lv=levels[0];levels.forEach(x=>{if(xp>=x[1])lv=x});document.querySelector("#level").textContent="NIVEL "+(levels.indexOf(lv)+1)+" · "+lv[0].toUpperCase();document.querySelector("#status").textContent=done+" / 10 módulos";document.querySelector("#xp").textContent=xp+" XP";document.querySelector("#xpfill").style.width=Math.min(100,(xp/1000)*100)+"%";document.querySelector("#progressText").textContent=Math.round(done/10*100)+"%";document.querySelector("#progressFill").style.width=(done/10*100)+"%";document.querySelector("#badges").innerHTML=badgeDefs.map((b,i)=>{const unlocked=done>=[1,3,4,5,7,8,9,10][i];return "<div class='badge "+(unlocked?"":"locked")+"'><span>"+b[0]+"</span><div><strong>"+b[1]+"</strong><small>"+b[2]+"</small></div></div>"}).join("")}
+function getCase(){return cases.find(c=>c.id===localStorage.getItem("aws-case"))||cases[0]}
+function renderCasePicker(){
+ const selected=getCase(),box=document.querySelector("#caseOptions"),detail=document.querySelector("#caseDetail");box.innerHTML="";
+ cases.forEach(c=>{const b=document.createElement("button");b.className="case-option"+(c.id===selected.id?" active":"");b.innerHTML="<strong>"+c.short+"</strong><small>"+c.name+"</small>";b.onclick=()=>{localStorage.setItem("aws-case",c.id);renderCasePicker()};box.appendChild(b)});
+ detail.innerHTML="<strong>"+selected.name+":</strong> "+selected.task+" <br><span>"+selected.objective+"</span>";
+}
 function renderChallenge(){
  const ch=challenges[current],box=document.querySelector("#challengeOptions"),feedback=document.querySelector("#challengeFeedback"),saved=localStorage.getItem("aws-assessment-"+(current+1))||"";
  document.querySelector("#challengeTitle").textContent="Prueba de dominio · "+String(current+1).padStart(2,"0");
@@ -127,7 +143,7 @@ function render(){
  document.querySelector("#title").textContent=m.idea;document.querySelector("#intro").textContent=m.intro;
  document.querySelector("#meta").innerHTML="<span class='pill'>SIN PROGRAMAR</span><span class='pill'>PRÁCTICA REAL</span><span class='pill'>MÓDULO "+(current+1)+"</span>";
  document.querySelector("#objectives").innerHTML=m.learn.map(x=>"<li>"+x+"</li>").join("");
- document.querySelector("#practiceText").textContent=m.practice;
+ document.querySelector("#practiceText").textContent=m.practice;renderCasePicker();
  document.querySelector("#missionTitle").textContent=current===8?"Tu primer agente":current===9?"Proyecto final":"Práctica del módulo";
  document.querySelector("#missionSteps").innerHTML=m.steps.map(x=>"<li>"+x+"</li>").join("");
  document.querySelector("#final").hidden=!m.final; mission.hidden=true; open.textContent="Abrir práctica ↗"; complete.disabled=true; practiced=false; renderChallenge();
@@ -154,7 +170,7 @@ function renderScenario(){
 }
 function renderContinue(){const p=document.createElement("div");p.className="feedback";p.innerHTML="<div class='feedback-title'>APLICACIÓN</div><p>La práctica de este módulo ocurre en tu propio trabajo. Abre la misión y vuelve cuando hayas probado el método.</p>";interactive.appendChild(p)}
 open.onclick=()=>{mission.hidden=!mission.hidden;open.textContent=mission.hidden?"Abrir práctica ↗":"Cerrar"};
-document.querySelector("#saveEvidence").onclick=()=>{const text=document.querySelector("#evidenceInput").value.trim();const real=document.querySelector("#evidenceReal").checked,concrete=document.querySelector("#evidenceConcrete").checked,learning=document.querySelector("#evidenceLearning").checked;if(text.length<30){document.querySelector("#evidenceStatus").textContent="Añade al menos 30 caracteres de evidencia concreta.";return}if(!(real&&concrete&&learning)){document.querySelector("#evidenceStatus").textContent="Marca las tres comprobaciones antes de guardar.";return}localStorage.setItem("aws-evidence-"+(current+1),JSON.stringify({version:1,module:current+1,text,savedAt:new Date().toISOString()}));localStorage.setItem("aws-evidence-checks-"+(current+1),JSON.stringify({real,concrete,learning}));document.querySelector("#evidenceStatus").textContent="✓ Evidencia preparada";
+document.querySelector("#saveEvidence").onclick=()=>{const text=document.querySelector("#evidenceInput").value.trim();const real=document.querySelector("#evidenceReal").checked,concrete=document.querySelector("#evidenceConcrete").checked,learning=document.querySelector("#evidenceLearning").checked;if(text.length<30){document.querySelector("#evidenceStatus").textContent="Añade al menos 30 caracteres de evidencia concreta.";return}if(!(real&&concrete&&learning)){document.querySelector("#evidenceStatus").textContent="Marca las tres comprobaciones antes de guardar.";return}localStorage.setItem("aws-evidence-"+(current+1),JSON.stringify({version:2,module:current+1,caseId:getCase().id,text,savedAt:new Date().toISOString()}));localStorage.setItem("aws-evidence-checks-"+(current+1),JSON.stringify({real,concrete,learning}));document.querySelector("#evidenceStatus").textContent="✓ Evidencia preparada";
 localStorage.setItem("aws-state-"+(current+1),"evidence_ready");
 syncCompletion();
 status.textContent="◐ Evidencia preparada";
