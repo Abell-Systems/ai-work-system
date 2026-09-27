@@ -133,7 +133,7 @@ function renderAssessmentReason(saved){
  btn.onclick=()=>{const text=input.value.trim();if(text.length<20)return;localStorage.setItem("aws-assessment-"+(current+1),text);st.textContent="✓ Razonamiento guardado";syncCompletion()};
 }
 function syncCompletion(){
- const ready=hasEvidence(current)&&hasPassed(current)&&hasRationale(current),state=getState(current);
+ const ready=hasEvidence(current)&&hasEvidenceChecks(current)&&hasPassed(current)&&hasRationale(current),state=getState(current);
  if(ready&&state!=="mastered")localStorage.setItem("aws-state-"+(current+1),"evidence_ready");
  complete.disabled=!ready;complete.textContent=state==="mastered"?"✓ Dominio demostrado · +100 XP":"He vuelto · continuar";
 }
