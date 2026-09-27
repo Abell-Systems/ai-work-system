@@ -33,7 +33,13 @@ footer{border-top:1px solid #cfc9bf;padding-top:18px;font-size:10px;letter-spaci
 <header class="top"><div><div class="eyebrow">INTERACTIVE MOOC · 01 / 10</div><h1>IA como<br><em>sistema de trabajo.</em></h1><p>Aprende a convertir una tarea en un proceso humano + IA que pueda observarse, verificarse e iterarse. Sin programar.</p></div><div class="hud"><div id="level" class="level">NIVEL 1 · EXPLORADOR</div><div id="status" class="status">0 / 10 módulos</div><button id="install" class="install" hidden>Instalar curso</button><div class="xpbar"><span id="xpfill"></span></div><div id="xp" class="xp">0 XP</div></div></header>
 <main><section class="map"><div class="section-label">TU RECORRIDO</div><div class="progress-card"><strong id="progressText">0%</strong><span>progreso</span><div class="track"><i id="progressFill"></i></div></div><div id="nodes" class="nodes"></div></section>
 <section class="lesson"><div id="moduleLabel" class="section-label">MÓDULO 01 · CAMBIA CÓMO VES LA IA</div>
-<div class="hero-card"><div class="step">IDEA CLAVE</div><h2 id="title">La IA no es el proceso.</h2><p id="intro">La IA es un componente de tu proceso de trabajo. Antes de pedirle que haga algo, necesitas saber qué problema estás resolviendo.</p><div id="meta" class="module-meta"></div><div class="objectives"><div class="step">LO QUE VAS A APRENDER</div><ul id="objectives"></ul></div><div id="interactive"></div><div id="challenge" class="challenge"><div class="step">PRUEBA DE DOMINIO</div><h3 id="challengeTitle">Demuestra lo aprendido.</h3><p id="challengePrompt"></p><div id="challengeOptions" class="choices"></div><div id="challengeFeedback"></div></div></div>
+<div class="hero-card"><div class="step">IDEA CLAVE</div><h2 id="title">La IA no es el proceso.</h2><p id="intro">La IA es un componente de tu proceso de trabajo. Antes de pedirle que haga algo, necesitas saber qué problema estás resolviendo.</p><div id="meta" class="module-meta"></div><div class="objectives"><div class="step">LO QUE VAS A APRENDER</div><ul id="objectives"></ul></div><div id="interactive"></div><div id="evidence" class="mission evidence-panel">
+<div class="step">EVIDENCIA DE APRENDIZAJE</div>
+<h3 id="evidenceTitle">Demuestra que lo has aplicado.</h3>
+<p id="evidencePrompt">Registra brevemente qué has producido o aprendido en tu práctica real.</p>
+<textarea id="evidenceInput" rows="5" placeholder="Escribe aquí la evidencia de este módulo..."></textarea>
+<div class="evidence-actions"><button id="saveEvidence">Guardar evidencia</button><span id="evidenceStatus" class="return"></span></div>
+</div><div id="challenge" class="challenge"><div class="step">PRUEBA DE DOMINIO</div><h3 id="challengeTitle">Demuestra lo aprendido.</h3><p id="challengePrompt"></p><div id="challengeOptions" class="choices"></div><div id="challengeFeedback"></div></div></div>
 <div id="external" class="external"><div><div class="step">PRÁCTICA REAL</div><h3 id="practiceTitle">Llévalo a tu trabajo.</h3><p id="practiceText">Elige una tarea real y utiliza tu propia IA. El curso enseña el método; la ejecución ocurre fuera.</p></div><button id="open">Abrir práctica ↗</button></div>
 <div id="mission" class="mission" hidden><div class="step">EN TU PROPIA IA</div><h3 id="missionTitle">Primera práctica</h3><ol id="missionSteps"></ol><p class="return">Vuelve al curso cuando hayas hecho la práctica.</p><button id="complete" disabled>He vuelto · continuar</button></div>
 <div id="final" class="final" hidden><div class="step" style="color:#b7b0a5">PROYECTO FINAL</div><h3 style="color:#fff">Diseña tu sistema humano + IA.</h3><p>Selecciona una tarea real y documenta objetivo, contexto, proceso, herramientas, autonomía, aprobaciones, verificación y métrica antes/después.</p><p><strong>Pregunta guía:</strong> ¿qué parte de mi trabajo puedo delegar a IA sin perder el control sobre el resultado?</p></div>
@@ -71,6 +77,18 @@ const challenges=[
 ["Tienes una tarea que recibe un email, extrae datos, consulta un documento y prepara una respuesta. ¿Cómo la diseñas?","Email → extraer datos → consultar documento → preparar respuesta → revisión humana.","Dar acceso total a la IA y dejar que resuelva cualquier cosa.","Pedir un único prompt que haga todo sin definir pasos."],
 ["Un agente puede leer documentos y enviar emails. ¿Qué configuración inicial eliges?","Puede leer y preparar el email, pero necesita aprobación antes de enviarlo.","Puede enviar cualquier email automáticamente.","Le doy todas las herramientas y reviso después."],
 ["Tu agente ha reducido el tiempo de una tarea, pero a veces produce errores. ¿Qué haces?","Mantengo la automatización, añado verificación y mido errores junto al ahorro de tiempo.","Elimino toda supervisión porque ahorra tiempo.","Aumento la autonomía para que aprenda a corregirse solo."]];
+const evidenceDefs=[
+["Ficha de tarea","Describe la tarea real, su objetivo y qué información necesita la IA."],
+["Briefing contextualizado","Registra el contexto, restricciones, resultado esperado y criterios de calidad."],
+["Encargo ejecutable","Escribe un encargo que otra persona podría ejecutar sin adivinar qué se espera."],
+["Registro de iteraciones","Resume la primera versión, qué detectaste y qué cambió después."],
+["Investigación trazable","Registra fuentes consultadas, afirmaciones verificadas y dudas abiertas."],
+["Artefacto revisado","Describe el artefacto creado, la revisión humana y qué mejoró."],
+["Checklist de verificación","Guarda un checklist reutilizable y qué comprobaste con él."],
+["Workflow humano + IA","Describe disparador, pasos, herramientas, decisiones y puntos de intervención."],
+["Especificación de agente","Define objetivo, reglas, herramientas, permisos, autonomía, aprobaciones y errores."],
+["Sistema completo","Resume proceso actual, sistema humano + IA y métrica antes/después."]
+];
 const badgeDefs=[["🧭","Primer paso","Completa el módulo 1"],["🧱","Constructor de contexto","Completa el módulo 3"],["🔄","Iterador","Completa el módulo 4"],["🔎","Investigador","Completa el módulo 5"],["🛡️","Verificador","Completa el módulo 7"],["🧰","Diseñador de flujos","Completa el módulo 8"],["🤖","Constructor de agentes","Completa el módulo 9"],["🏁","Diseñador de sistemas","Completa los 10 módulos"]];
 function getXP(){return modules.reduce((n,_,i)=>n+(localStorage.getItem("aws-m"+(i+1))==="done"?100:0),0)}
 function updateGamification(){const done=modules.filter((_,i)=>localStorage.getItem("aws-m"+(i+1))==="done").length;const xp=getXP();const levels=[["Explorador",0],["Practicante",200],["Operador",500],["Delegador",800],["Diseñador de sistemas",1000]];let lv=levels[0];levels.forEach(x=>{if(xp>=x[1])lv=x});document.querySelector("#level").textContent="NIVEL "+(levels.indexOf(lv)+1)+" · "+lv[0].toUpperCase();document.querySelector("#status").textContent=done+" / 10 módulos";document.querySelector("#xp").textContent=xp+" XP";document.querySelector("#xpfill").style.width=Math.min(100,(xp/1000)*100)+"%";document.querySelector("#progressText").textContent=Math.round(done/10*100)+"%";document.querySelector("#progressFill").style.width=(done/10*100)+"%";document.querySelector("#badges").innerHTML=badgeDefs.map((b,i)=>{const unlocked=done>=[1,3,4,5,7,8,9,10][i];return "<div class='badge "+(unlocked?"":"locked")+"'><span>"+b[0]+"</span><div><strong>"+b[1]+"</strong><small>"+b[2]+"</small></div></div>"}).join("")}
@@ -89,6 +107,12 @@ function render(){
  document.querySelector("#missionTitle").textContent=current===8?"Tu primer agente":current===9?"Proyecto final":"Práctica del módulo";
  document.querySelector("#missionSteps").innerHTML=m.steps.map(x=>"<li>"+x+"</li>").join("");
  document.querySelector("#final").hidden=!m.final; mission.hidden=true; open.textContent="Abrir práctica ↗"; complete.disabled=true; practiced=false; renderChallenge();
+const ev=JSON.parse(localStorage.getItem("aws-evidence-"+(current+1))||"null");
+document.querySelector("#evidenceTitle").textContent=evidenceDefs[current][0];
+document.querySelector("#evidencePrompt").textContent=evidenceDefs[current][1];
+document.querySelector("#evidenceInput").value=ev?.text||"";
+document.querySelector("#evidenceStatus").textContent=ev?"✓ Evidencia guardada":"";
+document.querySelector("#saveEvidence").disabled=false;
  interactive.innerHTML="";
  if(m.type==="scenario") renderScenario(); else renderContinue();
  document.querySelectorAll(".node").forEach((n,i)=>{n.classList.toggle("active",i===current);n.classList.toggle("done",localStorage.getItem("aws-m"+(i+1))==="done")}); updateGamification(); localStorage.setItem("aws-current",current);
@@ -100,6 +124,7 @@ function renderScenario(){
 }
 function renderContinue(){const p=document.createElement("div");p.className="feedback";p.innerHTML="<div class='feedback-title'>APLICACIÓN</div><p>La práctica de este módulo ocurre en tu propio trabajo. Abre la misión y vuelve cuando hayas probado el método.</p>";interactive.appendChild(p)}
 open.onclick=()=>{mission.hidden=!mission.hidden;open.textContent=mission.hidden?"Abrir práctica ↗":"Cerrar"};
+document.querySelector("#saveEvidence").onclick=()=>{const text=document.querySelector("#evidenceInput").value.trim();if(!text){document.querySelector("#evidenceStatus").textContent="Escribe algo antes de guardar.";return}localStorage.setItem("aws-evidence-"+(current+1),JSON.stringify({version:1,module:current+1,text,savedAt:new Date().toISOString()}));document.querySelector("#evidenceStatus").textContent="✓ Evidencia guardada";complete.disabled=false;status.textContent="◐ Evidencia preparada"};
 complete.onclick=()=>{if(complete.disabled)return;localStorage.setItem("aws-m"+(current+1),"done");localStorage.setItem("aws-challenge-"+(current+1),"passed");complete.textContent="✓ Misión completada · +100 XP";complete.disabled=true;document.querySelectorAll(".node")[current].classList.add("done");updateGamification();if(current<9){current++;setTimeout(render,450)}};
 render();
 </script></body></html>
