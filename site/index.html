@@ -140,7 +140,7 @@ function getCaseSteps(m,moduleIndex){
 }
 function getCasePractice(m,moduleIndex){
  const c=getCase();
- if(moduleIndex>=7)return c.task+" El objetivo del ejercicio es: "+c.objective;
+ if(moduleIndex>=7)return "Tu tarea: "+c.task+". Objetivo del ejercicio: "+c.objective;
  return m.practice+" Tu tarea: "+c.task;
 }
 function getCase(){const c=cases.find(x=>x.id===localStorage.getItem("aws-case"))||cases.find(x=>x.id==="own");const t=(localStorage.getItem("aws-task")||"").trim();return t?{...c,task:t}:c}
