@@ -60,9 +60,15 @@ See **[CURRICULUM.md](./CURRICULUM.md)** for the complete educational programme,
 
 ## Runtime
 
-The current public vertical slice is a deterministic static site in `site/`.
+The **single source of truth for the learner-facing product is `site/`**. There is no parallel React/Vite application and no build step required to run the course.
 
 The learning runtime intentionally has **no AI dependency**. AI work happens in the learner's own environment, keeping the course portable and avoiding vendor lock-in.
+
+### Local development
+
+Because the course is a static PWA, open `site/index.html` through any static file server. There is intentionally no `npm install`, Vite build, React runtime or test runner in the repository until the learning product actually needs them.
+
+Curriculum documents describe the intended programme; `site/index.html` is the current executable learning experience.
 
 ## Deployment
 
