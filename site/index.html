@@ -275,7 +275,8 @@ function getJourneyChallenge(moduleIndex){
 
 function renderChallenge(){
  const ch=getJourneyChallenge(current),box=document.querySelector("#challengeOptions"),feedback=document.querySelector("#challengeFeedback"),saved=localStorage.getItem("aws-assessment-"+getCase().id+"-"+(current+1))||localStorage.getItem("aws-assessment-"+(current+1))||"",result=getJourneyResult(current);
- document.querySelector("#challengePrompt").innerHTML="<div class='journey-meta'><span class='journey-pill'>"+(t=>t.length>34?t.slice(0,34)+"…":t)(esc(getCase().task).toUpperCase())+"</span><span class='journey-pill'>ETAPA "+ch.stage+" / 10</span><span class='journey-pill'>RIESGO: "+ch.risk.toUpperCase()+"</span></div>"+ch.prompt+(ch.transition?ch.transition:"");
+ const trunc=t=>t.length>34?t.slice(0,34)+"…":t;
+ document.querySelector("#challengePrompt").innerHTML="<div class='journey-meta'><span class='journey-pill'>"+trunc(esc(getCase().task).toUpperCase())+"</span><span class='journey-pill'>ETAPA "+ch.stage+" / 10</span><span class='journey-pill'>RIESGO: "+esc(ch.risk)+"</span></div>"+ch.prompt+(ch.transition?ch.transition:"");
  box.innerHTML="";feedback.innerHTML="";
  if(ch.prior)feedback.innerHTML="<div class='journey-consequence'><strong>CONTINUIDAD DEL CASO</strong><br>"+ch.prior+(ch.consequence?" "+ch.consequence:"")+"</div>";
  ch.options.forEach((txt,i)=>{
