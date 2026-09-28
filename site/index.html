@@ -17,23 +17,23 @@ h1 em{font-style:normal;color:#756c5e}p{max-width:720px;color:#625e57}.hud{min-w
 main{display:grid;grid-template-columns:280px 1fr;gap:56px;padding:42px 0}
 .nodes{display:grid;gap:7px;margin-top:18px}.node{display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:center;padding:10px 12px;color:#918a80;border-radius:8px;cursor:pointer}.node span{font-size:10px}.node strong{font-size:13px}.node.active{background:#171717;color:#fff}.node.done{color:#4d5a48}.node.done.active{background:#171717;color:#fff}
 .hero-card{background:#fff;border:1px solid #ded9d0;border-radius:14px;padding:32px;box-shadow:0 18px 50px #00000009}.welcome{padding:0 0 24px;margin-bottom:24px;border-bottom:1px solid #e2ddd5}.welcome h2{font-size:clamp(34px,5vw,58px);margin-bottom:12px}.welcome p{font-size:16px}.welcome strong{color:#171717}/* ponytail: two CSS gates instead of view logic — prelude = sin decisión aún, fresh = sin progreso aún */
-body.fresh .progress-card,body.fresh .hud .level,body.fresh .hud .status,body.fresh .hud .xpbar,body.fresh .hud .xp,body.fresh .badges{display:none}body.prelude .hero-card>:not(.welcome):not(#casePicker),body.prelude #external,body.prelude #mission{display:none}.case-picker.primary{margin:0 0 18px;background:#fff;border:1px solid #cfc9bf}.case-picker.primary .step{color:#171717}.case-picker.primary h3{font-size:22px}.case-picker.primary p{margin-top:5px}.case-option{transition:transform .15s,box-shadow .15s}.case-option:hover{transform:translateY(-1px);box-shadow:0 5px 15px #0000000b}
+body.fresh .progress-card,body.fresh .hud .level,body.fresh .hud .status,body.fresh .hud .xpbar,body.fresh .hud .xp,body.fresh .badges{display:none}body.prelude .hero-card>:not(.welcome):not(#casePicker),body.prelude #external,body.prelude #mission{display:none}.case-picker.primary{margin:0 0 18px;background:#fff;border:1px solid #cfc9bf}.case-picker.primary .step{color:#171717}.case-picker.primary h3{font-size:22px}.case-picker.primary p{margin-top:5px}
 .step{margin-bottom:12px}h2{font-size:38px;line-height:1;letter-spacing:-.035em;margin:0 0 14px}h3{font-size:24px;letter-spacing:-.025em;margin:4px 0 8px}
 .choices{display:grid;gap:9px;margin-top:26px}.choice{border:1px solid #d8d2c9;background:#f8f6f2;border-radius:9px;padding:16px;text-align:left;font:inherit;display:flex;justify-content:space-between;cursor:pointer}.choice:hover,.choice.selected{border-color:#171717;background:#f0ede7}
 .feedback{margin-top:14px;padding:18px;border-radius:9px;background:#f1ece4}.feedback.good{background:#e8eee5}.feedback p{margin:6px 0 0;font-size:14px}
-.case-picker{margin-top:18px;border:1px solid #d8d2c9;border-radius:14px;padding:20px;background:#f8f6f2}.case-options{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px}.case-option{border:1px solid #d8d2c9;background:#fff;border-radius:8px;padding:10px;text-align:left;font:inherit;cursor:pointer}.case-option.active{border-color:#171717;background:#171717;color:#fff}.case-option strong{display:block;font-size:12px}.case-option small{display:block;margin-top:3px;font-size:10px;opacity:.7}.case-detail{margin-top:12px;font-size:13px;color:#625e57}.external,.mission{margin-top:18px;border:1px solid #d8d2c9;border-radius:14px;padding:24px;display:flex;justify-content:space-between;gap:20px;align-items:end;background:#eeeae3}
+.case-picker{margin-top:18px;border:1px solid #d8d2c9;border-radius:14px;padding:20px;background:#f8f6f2}.task-input{width:100%;margin-top:14px;border:1px solid #cfc9bf;border-radius:9px;padding:14px 16px;font:inherit;font-size:16px;background:#fff}.task-input:focus{outline:none;border-color:#171717}.task-hints{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.task-hint{border:1px solid #d8d2c9;border-radius:999px;background:#f8f6f2;padding:7px 12px;font:inherit;font-size:12px;font-weight:700;color:#6d675f;cursor:pointer}.task-hint:hover{border-color:#171717;color:#171717}.task-actions{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-top:16px}.task-go{border:0;background:#171717;color:#fff;border-radius:8px;padding:12px 18px;font-weight:800;cursor:pointer;white-space:nowrap}.task-go:disabled{opacity:.35;cursor:not-allowed}.task-go[hidden]{display:none}.case-detail{font-size:13px;color:#625e57}.external,.mission{margin-top:18px;border:1px solid #d8d2c9;border-radius:14px;padding:24px;display:flex;justify-content:space-between;gap:20px;align-items:end;background:#eeeae3}
 .external button,.mission button{border:0;background:#171717;color:#fff;border-radius:8px;padding:12px 16px;font-weight:800;cursor:pointer;white-space:nowrap}.mission{display:block;background:#fff}.mission ol{padding-left:22px}.mission li{margin:8px 0}.mission button:disabled{opacity:.35;cursor:not-allowed}.return{font-size:13px}
 .objectives{margin:24px 0 0;padding:20px;border-top:1px solid #e2ddd5}.objectives ul{margin:10px 0;padding-left:20px}.objectives li{margin:7px 0;color:#625e57}
 .final{margin-top:18px;border:1px solid #d8d2c9;border-radius:14px;padding:24px;background:#171717;color:#fff}.final p{color:#d0cbc2}.final strong{color:#fff}
 footer{border-top:1px solid #cfc9bf;padding-top:18px;font-size:10px;letter-spacing:.12em;color:#857e74}
-@media(max-width:800px){.case-options{grid-template-columns:repeat(2,1fr)}.top{display:block}.hud{text-align:left;margin-top:18px}.status{margin-top:4px}main{grid-template-columns:1fr;gap:25px}.nodes{grid-template-columns:repeat(2,1fr)}.node{padding:8px}.hero-card{padding:22px}.external{display:block}.external button{margin-top:16px}}
+@media(max-width:800px){.task-actions{display:block}.task-go{display:block;width:100%;margin-top:12px}.top{display:block}.hud{text-align:left;margin-top:18px}.status{margin-top:4px}main{grid-template-columns:1fr;gap:25px}.nodes{grid-template-columns:repeat(2,1fr)}.node{padding:8px}.hero-card{padding:22px}.external{display:block}.external button{margin-top:16px}}
 </style>
 </head>
 <body><div class="app">
 <header class="top"><div><div class="eyebrow">UN CURSO PRÁCTICO · 01 / 10</div><h1>Trabaja mejor<br><em>con IA.</em></h1><p>No necesitas ser técnico ni aprender cientos de prompts. <strong>Solo necesitas una tarea que quieras hacer mejor.</strong></p></div><div class="hud"><div id="level" class="level">NIVEL 1 · EXPLORADOR</div><div id="status" class="status">0 / 10 módulos</div><button id="install" class="install" hidden>Instalar curso</button><div class="xpbar"><span id="xpfill"></span></div><div id="xp" class="xp">0 XP</div></div></header>
 <main><section class="map"><div class="section-label">TU RECORRIDO</div><div class="progress-card"><strong id="progressText">0%</strong><span>DE TU MISIÓN COMPLETADA</span><div class="track"><i id="progressFill"></i></div></div><div id="nodes" class="nodes"></div></section>
 <section class="lesson">
-<div class="hero-card"><div class="welcome"><div class="step">TU MISIÓN</div><h2>Mejorar una tarea real de tu trabajo.</h2><p>No necesitas aprender cientos de prompts. <strong>Vas a coger una tarea que ya haces y mejorarla paso a paso con IA.</strong></p></div><div id="casePicker" class="case-picker primary"><div class="step">ACCIÓN ACTUAL · TU PRIMERA DECISIÓN</div><h3>¿Qué tarea quieres mejorar?</h3><p>Elige la opción que más se parezca a tu trabajo. <strong>Si ninguna encaja, elige Mi propia tarea.</strong></p><div id="caseOptions" class="case-options"></div><div id="caseDetail" class="case-detail"></div></div><div class="step">EN ESTE PASO</div><h2 id="title">Cambia cómo ves la IA</h2><p id="intro">La IA es un componente de tu proceso de trabajo. Antes de pedirle que haga algo, necesitas saber qué problema estás resolviendo.</p><div class="objectives"><div class="step">LO QUE VAS A APRENDER</div><ul id="objectives"></ul></div><div id="interactive"></div><div id="evidence" class="mission evidence-panel">
+<div class="hero-card"><div class="welcome"><div class="step">TU MISIÓN</div><h2>Mejorar una tarea real de tu trabajo.</h2><p>No necesitas aprender cientos de prompts. <strong>Vas a coger una tarea que ya haces y mejorarla paso a paso con IA.</strong></p></div><div id="casePicker" class="case-picker primary"><div class="step">ACCIÓN ACTUAL · TU PRIMERA DECISIÓN</div><h3>¿Qué tarea quieres mejorar?</h3><p>Escribe una tarea concreta que ya haces. Si necesitas inspiración, toca un ejemplo.</p><input id="taskInput" class="task-input" type="text" placeholder="Preparar el briefing semanal para dirección" autocomplete="off"><div id="taskHints" class="task-hints"></div><div class="task-actions"><div id="caseDetail" class="case-detail"></div><button id="taskGo" class="task-go" disabled>Continuar →</button></div></div><div class="step">EN ESTE PASO</div><h2 id="title">Cambia cómo ves la IA</h2><p id="intro">La IA es un componente de tu proceso de trabajo. Antes de pedirle que haga algo, necesitas saber qué problema estás resolviendo.</p><div class="objectives"><div class="step">LO QUE VAS A APRENDER</div><ul id="objectives"></ul></div><div id="interactive"></div><div id="evidence" class="mission evidence-panel">
 <div class="step">LO QUE TE LLEVAS</div>
 <h3 id="evidenceTitle">¿Qué has conseguido?</h3>
 <p id="evidencePrompt">Cuéntanos qué has probado, cambiado o descubierto en tu trabajo.</p>
@@ -61,14 +61,16 @@ const modules=[
 {t:"Diseña tu sistema",idea:"El objetivo no es tener un agente; es mejorar un sistema de trabajo.",intro:"Combina persona, IA, herramientas y controles en un proceso medible.",learn:["Seleccionar procesos delegables","Diseñar controles","Medir antes y después"],practice:"Construye tu proyecto final.",steps:["Documenta el proceso actual.","Diseña el proceso humano + IA.","Define herramientas, autonomía y aprobaciones.","Define verificación y manejo de errores.","Mide tiempo, errores, pasos manuales o calidad antes y después."],final:true}
 ];
 const nodes=document.querySelector("#nodes"),status=document.querySelector("#status"),complete=document.querySelector("#complete"),completeHint=document.querySelector("#completeHint"),mission=document.querySelector("#mission"),open=document.querySelector("#open"),interactive=document.querySelector("#interactive");
+// ponytail: los perfiles de área solo se usan si un alumno ya tenía uno guardado; la entrada nueva escribe su tarea y usa "own".
 const cases=[
-{id:"admin",name:"Administración",short:"Admin",task:"Preparar y responder solicitudes internas repetitivas.",objective:"Reducir tiempo de respuesta sin perder control sobre datos y excepciones."},
-{id:"sales",name:"Ventas / clientes",short:"Ventas",task:"Preparar respuestas y seguimientos a clientes a partir de información existente.",objective:"Acelerar preparación manteniendo tono, datos correctos y aprobación humana."},
-{id:"marketing",name:"Marketing / contenidos",short:"Marketing",task:"Convertir información de producto en contenidos adaptados a distintos canales.",objective:"Aumentar producción sin perder coherencia, precisión ni revisión editorial."},
-{id:"hr",name:"RRHH",short:"RRHH",task:"Preparar documentación o respuestas sobre procesos internos de personas.",objective:"Reducir trabajo administrativo protegiendo datos personales y puntos sensibles."},
-{id:"direction",name:"Dirección / análisis",short:"Dirección",task:"Convertir información dispersa en un briefing para apoyar una decisión.",objective:"Reducir tiempo de análisis haciendo explícitas fuentes, incertidumbres y controles."},
-{id:"own",name:"Mi propia tarea",short:"Propia",task:"Elige una tarea real de tu trabajo.",objective:"Aplicar el método a un proceso que realmente quieras mejorar."}
+{id:"admin",name:"Administración",task:"Preparar y responder solicitudes internas repetitivas.",objective:"Reducir tiempo de respuesta sin perder control sobre datos y excepciones."},
+{id:"sales",name:"Ventas / clientes",task:"Preparar respuestas y seguimientos a clientes a partir de información existente.",objective:"Acelerar preparación manteniendo tono, datos correctos y aprobación humana."},
+{id:"marketing",name:"Marketing / contenidos",task:"Convertir información de producto en contenidos adaptados a distintos canales.",objective:"Aumentar producción sin perder coherencia, precisión ni revisión editorial."},
+{id:"hr",name:"RRHH",task:"Preparar documentación o respuestas sobre procesos internos de personas.",objective:"Reducir trabajo administrativo protegiendo datos personales y puntos sensibles."},
+{id:"direction",name:"Dirección / análisis",task:"Convertir información dispersa en un briefing para apoyar una decisión.",objective:"Reducir tiempo de análisis haciendo explícitas fuentes, incertidumbres y controles."},
+{id:"own",name:"Tu trabajo",task:"Elige una tarea real de tu trabajo.",objective:"Aplicar el método a un proceso que realmente quieras mejorar."}
 ];
+const taskHints=["Preparar emails","Analizar datos","Crear informes","Responder clientes"];
 
 let current=Number(localStorage.getItem("aws-current")||0), practiced=false;
 let deferredInstall=null;
@@ -113,7 +115,7 @@ function updateGamification(){const done=modules.filter((_,i)=>getState(i)==="ma
 function getCaseSteps(m,moduleIndex){
  const c=getCase();
  if(moduleIndex===7)return [
-  "Define el disparador de tu tarea en "+c.name+".",
+  "Define el disparador de esta tarea: "+c.task+".",
   "Escribe los pasos desde la entrada hasta el resultado.",
   "Asigna a cada paso una herramienta o fuente concreta.",
   "Marca qué decisiones puede tomar la IA y cuáles requieren criterio humano.",
@@ -137,14 +139,17 @@ function getCaseSteps(m,moduleIndex){
 }
 function getCasePractice(m,moduleIndex){
  const c=getCase();
- if(moduleIndex>=7)return c.name+" · "+c.task+" El objetivo del ejercicio es: "+c.objective;
- return m.practice+" Caso elegido: "+c.name+" · "+c.task;
+ if(moduleIndex>=7)return c.task+" El objetivo del ejercicio es: "+c.objective;
+ return m.practice+" Tu tarea: "+c.task;
 }
-function getCase(){return cases.find(c=>c.id===localStorage.getItem("aws-case"))||cases[0]}
+function getCase(){const c=cases.find(x=>x.id===localStorage.getItem("aws-case"))||cases.find(x=>x.id==="own");const t=(localStorage.getItem("aws-task")||"").trim();return t?{...c,task:t}:c}
 function renderCasePicker(){
- const selected=localStorage.getItem("aws-case")?getCase():null,box=document.querySelector("#caseOptions"),detail=document.querySelector("#caseDetail");box.innerHTML="";
- cases.forEach(c=>{const b=document.createElement("button");b.className="case-option"+(selected&&c.id===selected.id?" active":"");b.innerHTML="<strong>"+c.short+"</strong><small>"+c.name+"</small>";b.onclick=()=>{localStorage.setItem("aws-case",c.id);render()};box.appendChild(b)});
- detail.innerHTML=selected?"<strong>Tu misión:</strong> "+selected.task+" <br><span>Queremos conseguir: "+selected.objective+"</span>":"<span>Ninguna todavía. Elige la que más se parezca a tu trabajo y empiezas.</span>";
+ const input=document.querySelector("#taskInput"),go=document.querySelector("#taskGo"),detail=document.querySelector("#caseDetail"),box=document.querySelector("#taskHints");
+ input.value=localStorage.getItem("aws-task")||"";box.innerHTML="";
+ taskHints.forEach(h=>{const b=document.createElement("button");b.type="button";b.className="task-hint";b.textContent=h;b.onclick=()=>{input.value=h;input.dispatchEvent(new Event("input"))};box.appendChild(b)});
+ const sync=()=>{const v=input.value.trim(),decided=!!localStorage.getItem("aws-case");go.disabled=v.length<4;go.hidden=decided;detail.textContent=!v?"O escribe la tuya: basta con una frase.":decided?"Tu primera misión. Si la cambias, se actualiza.":"Se guardará como tu primera misión.";if(v)localStorage.setItem("aws-task",v);else localStorage.removeItem("aws-task")};
+ input.oninput=sync;sync();
+ go.onclick=()=>{if(go.disabled)return;localStorage.setItem("aws-case","own");render()};
 }
 function getJourneyChallenge(moduleIndex){
  const c=getCase(),prev=moduleIndex>0?getJourneyResult(moduleIndex-1):null;
@@ -161,7 +166,7 @@ function getJourneyChallenge(moduleIndex){
  const consequence=prev?.consequence||null;
  const stages=[
   {
-   prompt:"En "+c.name+" quieres mejorar: "+c.task+" ¿qué defines primero?",
+   prompt:"Quieres mejorar: "+c.task+" ¿qué defines primero?",
    options:[
     "Elegir una herramienta de IA y automatizarla completa.",
     "Definir el objetivo, el resultado y el riesgo que debes controlar.",
@@ -179,7 +184,7 @@ function getJourneyChallenge(moduleIndex){
    feedback:"El contexto debe ser suficiente para ejecutar el trabajo, pero limitado a lo necesario."
   },
   {
-   prompt:"Ahora conviertes el objetivo de "+c.name+" en un encargo ejecutable. ¿Qué falta?",
+   prompt:"Ahora conviertes el objetivo de esta tarea en un encargo ejecutable. ¿Qué falta?",
    options:[
     "Resultado esperado, formato, restricciones y criterios de aceptación.",
     "Un prompt más largo, aunque no cambie el resultado esperado.",
@@ -197,7 +202,7 @@ function getJourneyChallenge(moduleIndex){
    feedback:"El ciclo consiste en observar el resultado, detectar una brecha y cambiar algo concreto."
   },
   {
-   prompt:"Necesitas investigar una cuestión de "+c.name+". ¿Qué diseño mantiene trazabilidad?",
+   prompt:"Necesitas investigar una cuestión de tu trabajo. ¿Qué diseño mantiene trazabilidad?",
    options:[
     "Pedir un resumen y usarlo como fuente final.",
     "Formular preguntas, contrastar fuentes y separar hechos de inferencias.",
@@ -260,7 +265,6 @@ function getJourneyChallenge(moduleIndex){
   correct:stage.correct,
   feedback:stage.feedback,
   stage:moduleIndex+1,
-  total:10,
   prior:priorText,
   transition:nextRisk,
   risk,
@@ -270,8 +274,7 @@ function getJourneyChallenge(moduleIndex){
 
 function renderChallenge(){
  const ch=getJourneyChallenge(current),box=document.querySelector("#challengeOptions"),feedback=document.querySelector("#challengeFeedback"),saved=localStorage.getItem("aws-assessment-"+getCase().id+"-"+(current+1))||localStorage.getItem("aws-assessment-"+(current+1))||"",result=getJourneyResult(current);
- document.querySelector("#challengeTitle").textContent="Caso · etapa "+String(ch.stage).padStart(2,"0")+" / "+ch.total;
- document.querySelector("#challengePrompt").innerHTML="<div class='journey-meta'><span class='journey-pill'>"+getCase().name.toUpperCase()+"</span><span class='journey-pill'>ETAPA "+ch.stage+" / 10</span><span class='journey-pill'>RIESGO: "+ch.risk.toUpperCase()+"</span></div>"+ch.prompt+(ch.transition?ch.transition:"");
+ document.querySelector("#challengePrompt").innerHTML="<div class='journey-meta'><span class='journey-pill'>"+(t=>t.length>34?t.slice(0,34)+"…":t)(getCase().task.toUpperCase())+"</span><span class='journey-pill'>ETAPA "+ch.stage+" / 10</span><span class='journey-pill'>RIESGO: "+ch.risk.toUpperCase()+"</span></div>"+ch.prompt+(ch.transition?ch.transition:"");
  box.innerHTML="";feedback.innerHTML="";
  if(ch.prior)feedback.innerHTML="<div class='journey-consequence'><strong>CONTINUIDAD DEL CASO</strong><br>"+ch.prior+(ch.consequence?" "+ch.consequence:"")+"</div>";
  ch.options.forEach((txt,i)=>{

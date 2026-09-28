@@ -63,25 +63,46 @@ const check = async (label) => {
   return label;
 };
 
-// --- fresh learner: no case, no progress
+// --- fresh learner: clean state, no task, no progress
 await check('fresh');
+assert(await evalJs(`localStorage.getItem('aws-case') === null && localStorage.getItem('aws-task') === null`), 'starts from clean learner state');
 assert(await evalJs(`document.body.classList.contains('prelude')`), 'fresh learner has .prelude');
 assert(await evalJs(`getComputedStyle(document.querySelector('#title')).display`) === 'none', 'lesson concept hidden before first decision');
 assert(await evalJs(`getComputedStyle(document.querySelector('#badges')).display`) === 'none', 'badges hidden before any progress');
 assert(await evalJs(`getComputedStyle(document.querySelector('.progress-card')).display`) === 'none', 'progress card hidden before any progress');
-assert(await evalJs(`getComputedStyle(document.querySelector('#casePicker')).display`) !== 'none', 'case picker visible before first decision');
-assert(await evalJs(`!!document.querySelector('#casePicker').offsetParent`), 'case picker is the visible action');
-assert(await evalJs(`document.querySelectorAll('.case-option.active').length`) === 0, 'no case pre-selected before the first decision');
-assert(await evalJs(`document.querySelector('#caseDetail').textContent.includes('Ninguna todavía')`), 'case detail prompts instead of assuming a mission');
+assert(await evalJs(`!!document.querySelector('#casePicker').offsetParent`), 'task picker is the visible action');
+assert(await evalJs(`document.querySelector('#taskInput').value`) === '', 'no task assumed for the learner');
+assert(await evalJs(`document.querySelector('#taskGo').disabled`) === true, 'cannot continue without a task');
 assert(await evalJs(`[...document.querySelectorAll('.hero-card button,#external')].filter(el=>el.offsetParent&&!el.closest('#casePicker')).length`) === 0, 'no competing action visible before the first decision');
 
-// --- first decision made
-await evalJs(`document.querySelectorAll('.case-option')[4].click()`);
+// --- suggestion chip fills the task field
+await evalJs(`document.querySelectorAll('.task-hint')[2].click()`);
+await sleep(100);
+assert(await evalJs(`document.querySelector('#taskInput').value`) === 'Crear informes', 'suggestion chip fills the task field');
+assert(await evalJs(`!document.querySelector('#taskGo').disabled`), 'chip enables continuing');
+
+// --- learner writes their own real task
+await evalJs(`(()=>{const i=document.querySelector('#taskInput');i.value='Preparar el briefing semanal para dirección';i.dispatchEvent(new Event('input'));return 1})()`);
+await sleep(100);
+assert(await evalJs(`localStorage.getItem('aws-task')`) === 'Preparar el briefing semanal para dirección', 'typed task is persisted as it is written');
+
+await evalJs(`document.querySelector('#taskGo').click()`);
 await sleep(200);
-assert(await evalJs(`!document.body.classList.contains('prelude')`), 'prelude ends after choosing a case');
-assert(await evalJs(`getComputedStyle(document.querySelector('#title')).display`) !== 'none', 'lesson concept shown after choosing');
-assert(await evalJs(`localStorage.getItem('aws-case')`) === 'direction', 'chosen case persisted');
+assert(await evalJs(`!document.body.classList.contains('prelude')`), 'prelude ends after confirming the task');
+assert(await evalJs(`localStorage.getItem('aws-case')`) === 'own', 'free text lands on the own-task profile');
+assert(await evalJs(`document.querySelector('#title').offsetParent !== null`), 'lesson concept shown after confirming');
+assert(await evalJs(`document.querySelector('#title').textContent`) === 'Cambia cómo ves la IA', 'module 1 is the next visible step');
+assert(await evalJs(`document.querySelector('#taskInput').value`) === 'Preparar el briefing semanal para dirección', 'chosen task stays visible for editing');
+assert(await evalJs(`document.querySelector('#taskGo').hidden`) === true, 'the confirm button retires once the task is saved');
 assert(await evalJs(`getComputedStyle(document.querySelector('#badges')).display`) === 'none', 'badges still hidden while no progress');
+
+// --- all 10 modules still render against the learner's own task
+const titles = await evalJs(`(()=>{const out=[];for(let i=0;i<10;i++){current=i;render();out.push(document.querySelector('#title').textContent)}return out})()`);
+assert(titles.length === 10 && titles[0] === 'Cambia cómo ves la IA' && titles[9] === 'Diseña tu sistema', 'all 10 modules render without errors');
+assert((await evalJs(`document.querySelector('#missionSteps').textContent`)).includes('Preparar el briefing semanal para dirección'), 'the final project steps are built on the learner task');
+assert((await evalJs(`document.querySelector('#practiceText').textContent`)).includes('Preparar el briefing semanal para dirección'), 'the practice text is built on the learner task');
+await evalJs(`current=0;render();1`);
+assert((await evalJs(`document.querySelector('#challengePrompt').textContent`)).includes('Preparar el briefing semanal para dirección'), 'the journey challenge is built on the learner task');
 
 // --- one module mastered
 await evalJs(`localStorage.setItem('aws-state-1','mastered')`);
