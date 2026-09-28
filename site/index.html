@@ -25,6 +25,19 @@ body.fresh .progress-card,body.fresh .hud .level,body.fresh .hud .status,body.fr
 .external button,.mission button{border:0;background:#171717;color:#fff;border-radius:8px;padding:12px 16px;font-weight:800;cursor:pointer;white-space:nowrap}.mission{display:block;background:#fff}.mission[hidden]{display:none}.mission ol{padding-left:22px}.mission li{margin:8px 0}.mission button:disabled{opacity:.35;cursor:not-allowed}.return{font-size:13px}
 .objectives{margin:24px 0 0;padding:20px;border-top:1px solid #e2ddd5}.objectives ul{margin:10px 0;padding-left:20px}.objectives li{margin:7px 0;color:#625e57}
 .final{margin-top:18px;border:1px solid #d8d2c9;border-radius:14px;padding:24px;background:#171717;color:#fff}.final p{color:#d0cbc2}.final strong{color:#fff}
+.cert-form{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}.cert-form input{border:1px solid #3a3a3a;background:#1f1f1f;color:#fff;border-radius:8px;padding:10px 12px;font:inherit;min-width:220px}.cert-form button{border:0;background:#fff;color:#171717;border-radius:8px;padding:10px 14px;font-weight:800;cursor:pointer}.cert-form button:disabled{opacity:.35;cursor:not-allowed}.cert-hint{font-size:11px;color:#b7b0a5;margin-top:8px}
+#certificatePage{display:none;margin-top:24px;border:1px solid #d8d2c9;border-radius:14px;padding:40px;background:#fff}
+#certificatePage.show{display:block}
+#certificatePage .cert-eyebrow{font-size:11px;letter-spacing:.16em;font-weight:800;color:#766f65}
+#certificatePage h2{font-size:30px;letter-spacing:-.02em;margin:6px 0 2px}
+#certificatePage .cert-course{font-size:15px;color:#625e57;margin:0 0 20px}
+#certificatePage .cert-body{font-size:15px;line-height:1.6}
+#certificatePage .cert-result{margin:18px 0;padding:14px 18px;background:#f8f6f2;border-radius:10px;font-size:14px}
+#certificatePage .cert-result ul{margin:6px 0 0;padding-left:20px}
+#certificatePage .cert-meta{margin-top:18px;font-size:13px;color:#625e57}
+#certificatePage .cert-meta div{margin:3px 0}
+#certificatePage .cert-note{margin-top:24px;padding-top:14px;border-top:1px solid #e2ddd5;font-size:11px;color:#8a8379}
+@media print{body>.app>*:not(main){display:none}main>*:not(.lesson){display:none}.lesson>*:not(#courseDone):not(#certificatePage){display:none}#courseDone{display:none}#certificatePage{display:block;border:0;padding:0}}
 footer{border-top:1px solid #cfc9bf;padding-top:18px;font-size:10px;letter-spacing:.12em;color:#857e74}
 @media(max-width:800px){.task-actions{display:block}.task-go{display:block;width:100%;margin-top:12px}.top{display:block}.hud{text-align:left;margin-top:18px}.status{margin-top:4px}main{grid-template-columns:1fr;gap:25px}.nodes{grid-template-columns:repeat(2,1fr)}.node{padding:8px}.hero-card{padding:22px}.external{display:block}.external button{margin-top:16px}}
 </style>
@@ -43,7 +56,8 @@ footer{border-top:1px solid #cfc9bf;padding-top:18px;font-size:10px;letter-spaci
 <div id="external" class="external"><div><div class="step">AHORA, A PROBARLO</div><h3 id="practiceTitle">Hazlo con una tarea de verdad.</h3><p id="practiceText">Abre tu IA, prueba el paso y vuelve. El curso te acompaña; el trabajo ocurre en tu mundo real.</p></div><button id="open">Empezar →</button></div>
 <div id="mission" class="mission" hidden><div class="step">EN TU PROPIA IA</div><h3 id="missionTitle">Primera práctica</h3><ol id="missionSteps"></ol><p class="return">Cuando vuelvas, cuéntanos qué pasó. No hace falta que salga perfecto.</p><button id="complete" disabled>Ya lo he probado →</button><span id="completeHint" class="assessment-status"></span></div>
 <div id="final" class="final" hidden><div class="step" style="color:#b7b0a5">TU PROYECTO FINAL</div><h3 style="color:#fff">Mira lo lejos que has llegado.</h3><p>Ahora vas a convertir todo lo aprendido en una forma de trabajar que puedas repetir y mejorar.</p><p><strong>Pregunta guía:</strong> ¿qué parte de mi trabajo puede hacer la IA y qué parte quiero seguir controlando yo?</p></div>
-<div id="courseDone" class="final" hidden><div class="step" style="color:#b7b0a5">CURSO COMPLETADO</div><h3 style="color:#fff">Has terminado los 10 módulos.</h3><p id="courseDoneResult"></p></div>
+<div id="courseDone" class="final" hidden><div class="step" style="color:#b7b0a5">CURSO COMPLETADO</div><h3 style="color:#fff">Has terminado los 10 módulos.</h3><p id="courseDoneResult"></p><div class="cert-form"><input id="certName" type="text" placeholder="Tu nombre completo" autocomplete="name"><button id="certGenerate">Generar certificado →</button></div><p class="cert-hint">Certificado de finalización, no una certificación oficial ni de competencia profesional.</p></div>
+<div id="certificatePage"></div>
 </section></main>
 <div class="badges" id="badges"></div><footer>APRENDE AQUÍ · PRUÉBALO EN TU TRABAJO · VUELVE CON LO QUE DESCUBRAS</footer>
 </div>
@@ -112,7 +126,31 @@ function hasEvidence(i){const ev=JSON.parse(localStorage.getItem("aws-evidence-"
 function hasEvidenceChecks(i){const c=JSON.parse(localStorage.getItem("aws-evidence-checks-"+(i+1))||"null");return c?.real===true&&c?.concrete===true&&c?.learning===true}
 function hasPassed(i){if(getState(i)==="mastered")return true;return getJourneyResult(i)?.passed===true}
 function hasRationale(i){if(getState(i)==="mastered")return true;return (localStorage.getItem("aws-assessment-"+getCase().id+"-"+(i+1))||"").trim().length>=20}
-function updateGamification(){const done=modules.filter((_,i)=>getState(i)==="mastered").length;const xp=getXP();document.body.classList.toggle("fresh",done===0&&xp===0);const levels=[["Explorador",0],["Practicante",200],["Operador",500],["Delegador",800],["Diseñador de sistemas",1000]];let lv=levels[0];levels.forEach(x=>{if(xp>=x[1])lv=x});document.querySelector("#level").textContent="NIVEL "+(levels.indexOf(lv)+1)+" · "+lv[0].toUpperCase();document.querySelector("#status").textContent=done+" / 10 módulos";document.querySelector("#xp").textContent=xp+" XP";document.querySelector("#xpfill").style.width=Math.min(100,(xp/1000)*100)+"%";document.querySelector("#progressText").textContent=Math.round(done/10*100)+"%";document.querySelector("#progressFill").style.width=(done/10*100)+"%";document.querySelector("#badges").innerHTML=badgeDefs.map((b,i)=>{const unlocked=done>=[1,3,4,5,7,8,9,10][i];return "<div class='badge "+(unlocked?"":"locked")+"'><span>"+b[0]+"</span><div><strong>"+b[1]+"</strong><small>"+b[2]+"</small></div></div>"}).join("");const allDone=done===modules.length,card=document.querySelector("#courseDone");card.hidden=!allDone;if(allDone)card.querySelector("#courseDoneResult").textContent=Math.round(done/10*100)+"% de tu misión · "+xp+" XP · NIVEL "+(levels.indexOf(lv)+1)+" · "+lv[0].toUpperCase()}
+function updateGamification(){const done=modules.filter((_,i)=>getState(i)==="mastered").length;const xp=getXP();document.body.classList.toggle("fresh",done===0&&xp===0);const levels=[["Explorador",0],["Practicante",200],["Operador",500],["Delegador",800],["Diseñador de sistemas",1000]];let lv=levels[0];levels.forEach(x=>{if(xp>=x[1])lv=x});document.querySelector("#level").textContent="NIVEL "+(levels.indexOf(lv)+1)+" · "+lv[0].toUpperCase();document.querySelector("#status").textContent=done+" / 10 módulos";document.querySelector("#xp").textContent=xp+" XP";document.querySelector("#xpfill").style.width=Math.min(100,(xp/1000)*100)+"%";document.querySelector("#progressText").textContent=Math.round(done/10*100)+"%";document.querySelector("#progressFill").style.width=(done/10*100)+"%";document.querySelector("#badges").innerHTML=badgeDefs.map((b,i)=>{const unlocked=done>=[1,3,4,5,7,8,9,10][i];return "<div class='badge "+(unlocked?"":"locked")+"'><span>"+b[0]+"</span><div><strong>"+b[1]+"</strong><small>"+b[2]+"</small></div></div>"}).join("");const allDone=done===modules.length,card=document.querySelector("#courseDone");card.hidden=!allDone;if(allDone){card.querySelector("#courseDoneResult").textContent=Math.round(done/10*100)+"% de tu misión · "+xp+" XP · NIVEL "+(levels.indexOf(lv)+1)+" · "+lv[0].toUpperCase();if(!localStorage.getItem("aws-cert-date"))localStorage.setItem("aws-cert-date",new Date().toISOString());const cn=document.querySelector("#certName");if(!cn.value)cn.value=localStorage.getItem("aws-cert-name")||""}}
+// ponytail: hash no criptográfico — basta para un identificador de documento, no para verificación online (ver CERTIFICACION-SPEC-V1.md)
+function hashStr(s){let h=0;for(let i=0;i<s.length;i++){h=(h<<5)-h+s.charCodeAt(i);h|=0}return (h>>>0).toString(16).padStart(8,"0")}
+function certId(name,dateIso){return "AWS-"+dateIso.slice(0,4)+"-"+hashStr(name+"|"+dateIso+"|"+getXP()).toUpperCase()}
+function renderCertificate(name){
+ const dateIso=localStorage.getItem("aws-cert-date")||new Date().toISOString();
+ const dateStr=new Date(dateIso).toLocaleDateString("es-ES",{year:"numeric",month:"long",day:"numeric"});
+ const id=certId(name,dateIso);
+ document.querySelector("#certificatePage").innerHTML=
+  "<div class='cert-eyebrow'>CERTIFICADO DE FINALIZACIÓN</div>"+
+  "<h2>IA como sistema de trabajo</h2>"+
+  "<p class='cert-course'>Emitido por Abell Systems</p>"+
+  "<p class='cert-body'>Se certifica que <strong>"+esc(name)+"</strong> ha completado satisfactoriamente el recorrido formativo de 10 módulos del curso «IA como sistema de trabajo», incluyendo las actividades prácticas asociadas.</p>"+
+  "<div class='cert-result'><strong>Resultado</strong><ul><li>10/10 módulos completados</li><li>1.000 XP</li><li>10 evidencias prácticas</li></ul></div>"+
+  "<div class='cert-meta'><div>Fecha de finalización: "+esc(dateStr)+"</div><div>Emisor: Abell Systems</div><div>Identificador del documento: "+id+"</div></div>"+
+  "<p class='cert-note'>Este certificado acredita la finalización del recorrido formativo. No constituye una certificación oficial, homologada, universitaria o profesional, ni acredita por sí mismo una competencia profesional. El identificador del documento permite identificar el documento emitido, pero no constituye una verificación online de autenticidad.</p>";
+}
+document.querySelector("#certGenerate").onclick=()=>{
+ const input=document.querySelector("#certName"),name=input.value.trim();
+ if(name.length<3){input.focus();return}
+ localStorage.setItem("aws-cert-name",name);
+ renderCertificate(name);
+ document.querySelector("#certificatePage").classList.add("show");
+ setTimeout(()=>window.print(),50);
+};
 function getCaseSteps(m,moduleIndex){
  const c=getCase();
  if(moduleIndex===7)return [
