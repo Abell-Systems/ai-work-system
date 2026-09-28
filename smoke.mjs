@@ -104,6 +104,13 @@ assert((await evalJs(`document.querySelector('#practiceText').textContent`)).inc
 await evalJs(`current=0;render();1`);
 assert((await evalJs(`document.querySelector('#challengePrompt').textContent`)).includes('Preparar el briefing semanal para dirección'), 'the journey challenge is built on the learner task');
 
+// --- a task containing HTML is rendered literally, not as markup
+await evalJs(`(()=>{const i=document.querySelector('#taskInput');i.value='<img src=x onerror=alert(1)>';i.dispatchEvent(new Event('input'));document.querySelector('#taskGo').click();return 1})()`);
+await sleep(200);
+assert(await evalJs(`current=7;render();document.querySelector('#missionSteps').querySelectorAll('img').length`) === 0, 'a task with markup does not inject an element into the mission steps');
+assert((await evalJs(`document.querySelector('#missionSteps').textContent`)).includes('<img src=x onerror=alert(1)>'), 'the raw task text still appears, escaped, in the mission steps');
+assert(await evalJs(`current=0;render();document.querySelector('#challengePrompt').querySelectorAll('img').length`) === 0, 'a task with markup does not inject an element into the challenge prompt');
+
 // --- one module mastered
 await evalJs(`localStorage.setItem('aws-state-1','mastered')`);
 await check('progress');

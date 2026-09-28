@@ -71,6 +71,7 @@ const cases=[
 {id:"own",name:"Tu trabajo",task:"Elige una tarea real de tu trabajo.",objective:"Aplicar el método a un proceso que realmente quieras mejorar."}
 ];
 const taskHints=["Preparar emails","Analizar datos","Crear informes","Responder clientes"];
+const esc=s=>String(s).replace(/[&<>"']/g,c=>"&#"+c.charCodeAt(0)+";");
 
 let current=Number(localStorage.getItem("aws-current")||0), practiced=false;
 let deferredInstall=null;
@@ -115,21 +116,21 @@ function updateGamification(){const done=modules.filter((_,i)=>getState(i)==="ma
 function getCaseSteps(m,moduleIndex){
  const c=getCase();
  if(moduleIndex===7)return [
-  "Define el disparador de esta tarea: "+c.task+".",
+  "Define el disparador de esta tarea: "+esc(c.task)+".",
   "Escribe los pasos desde la entrada hasta el resultado.",
   "Asigna a cada paso una herramienta o fuente concreta.",
   "Marca qué decisiones puede tomar la IA y cuáles requieren criterio humano.",
   "Define qué evidencia comprobarías antes de dar el resultado por válido."
  ];
  if(moduleIndex===8)return [
-  "Define el objetivo del agente para: "+c.task,
+  "Define el objetivo del agente para: "+esc(c.task),
   "Especifica qué información puede leer y qué información no necesita.",
   "Enumera herramientas y permisos mínimos.",
   "Marca las acciones que requieren aprobación humana.",
   "Prueba un caso normal y un caso de error o excepción."
  ];
  if(moduleIndex===9)return [
-  "Documenta cómo haces actualmente esta tarea: "+c.task,
+  "Documenta cómo haces actualmente esta tarea: "+esc(c.task),
   "Diseña el flujo humano + IA y señala qué cambia.",
   "Define herramientas, autonomía, permisos y aprobaciones.",
   "Define cómo verificarás el resultado y qué harás ante un error.",
@@ -166,7 +167,7 @@ function getJourneyChallenge(moduleIndex){
  const consequence=prev?.consequence||null;
  const stages=[
   {
-   prompt:"Quieres mejorar: "+c.task+" ¿qué defines primero?",
+   prompt:"Quieres mejorar: "+esc(c.task)+" ¿qué defines primero?",
    options:[
     "Elegir una herramienta de IA y automatizarla completa.",
     "Definir el objetivo, el resultado y el riesgo que debes controlar.",
@@ -274,7 +275,7 @@ function getJourneyChallenge(moduleIndex){
 
 function renderChallenge(){
  const ch=getJourneyChallenge(current),box=document.querySelector("#challengeOptions"),feedback=document.querySelector("#challengeFeedback"),saved=localStorage.getItem("aws-assessment-"+getCase().id+"-"+(current+1))||localStorage.getItem("aws-assessment-"+(current+1))||"",result=getJourneyResult(current);
- document.querySelector("#challengePrompt").innerHTML="<div class='journey-meta'><span class='journey-pill'>"+(t=>t.length>34?t.slice(0,34)+"…":t)(getCase().task.toUpperCase())+"</span><span class='journey-pill'>ETAPA "+ch.stage+" / 10</span><span class='journey-pill'>RIESGO: "+ch.risk.toUpperCase()+"</span></div>"+ch.prompt+(ch.transition?ch.transition:"");
+ document.querySelector("#challengePrompt").innerHTML="<div class='journey-meta'><span class='journey-pill'>"+(t=>t.length>34?t.slice(0,34)+"…":t)(esc(getCase().task).toUpperCase())+"</span><span class='journey-pill'>ETAPA "+ch.stage+" / 10</span><span class='journey-pill'>RIESGO: "+ch.risk.toUpperCase()+"</span></div>"+ch.prompt+(ch.transition?ch.transition:"");
  box.innerHTML="";feedback.innerHTML="";
  if(ch.prior)feedback.innerHTML="<div class='journey-consequence'><strong>CONTINUIDAD DEL CASO</strong><br>"+ch.prior+(ch.consequence?" "+ch.consequence:"")+"</div>";
  ch.options.forEach((txt,i)=>{
