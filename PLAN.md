@@ -132,7 +132,7 @@ Medir comprensión, transferencia, evidencia producida, criterio sobre autonomí
 7. [x] Exigir justificación breve de las decisiones de dominio.
 
 ### Sprint 2 — Casos
-**Estado: en curso — recorrido secuencial implementado**
+**Estado: bloqueado para validación — recorrido secuencial implementado**
 
 1. [x] Crear 5 casos completos.
 2. [x] Asociar casos a módulos.
@@ -143,7 +143,11 @@ Medir comprensión, transferencia, evidencia producida, criterio sobre autonomí
 7. [x] Hacer que cada etapa muestre cómo la decisión anterior condiciona la siguiente.
 8. [ ] Validar los recorridos con alumnos no técnicos.
 
+**Regla:** no añadir nuevas funcionalidades al recorrido hasta completar la validación con alumnos reales.
+
 ### Sprint 3 — Agentes + seguridad
+**Estado: pospuesto hasta validación real**
+
 1. Refinar automatización vs agente.
 2. Añadir decisiones de permisos.
 3. Añadir escenarios de aprobación.
@@ -162,6 +166,7 @@ Medir comprensión, transferencia, evidencia producida, criterio sobre autonomí
 4. Evidencias exportables.
 
 ### Sprint 6 — Arquitectura + UX
+**Estado: parcialmente anticipado — fork eliminado; resto pendiente**
 1. Separar contenido.
 2. Tests.
 3. Accesibilidad.
@@ -169,6 +174,7 @@ Medir comprensión, transferencia, evidencia producida, criterio sobre autonomí
 5. Instrumentación mínima para pruebas educativas.
 
 ### Sprint 7 — Validación
+**Estado: P0 / siguiente hito**
 1. Test con 5–10 alumnos.
 2. Recoger resultados.
 3. Identificar bloqueos.
@@ -178,6 +184,19 @@ Medir comprensión, transferencia, evidencia producida, criterio sobre autonomí
 ## Criterio de éxito
 
 El curso se considera validado cuando un alumno no técnico puede seleccionar una tarea real, describirla, trabajar con IA iterativamente, verificarla, diseñar un workflow, decidir autonomía segura, definir controles, explicar errores, medir una mejora y reproducir el sistema en su trabajo.
+
+## Gate de validación antes de seguir
+
+Antes de Sprint 3 o de nuevas funcionalidades, el producto debe pasar este gate:
+
+- [ ] Probar con 5 personas no técnicas.
+- [ ] Observar módulos 1–3 y 10 sin enseñarles cómo resolverlos.
+- [ ] Comprobar si pueden producir briefing + checklist + métrica antes/después.
+- [ ] Registrar cada bloqueo y confusión.
+- [ ] Corregir únicamente problemas observados.
+- [ ] Repetir la prueba hasta que el recorrido sea comprensible y ejecutable.
+
+La implementación puede seguir siendo sencilla. La evidencia de uso real es ahora la prioridad.
 
 ## Fuera de alcance por ahora
 
