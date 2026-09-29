@@ -253,10 +253,12 @@ function renderChallenge(){
 
 function renderAssessmentReason(saved){
  document.querySelector("#assessmentReasonWrap")?.remove();const wrap=document.createElement("div");wrap.id="assessmentReasonWrap";wrap.className="assessment-reason";
- wrap.innerHTML="<label for='assessmentReason'>"+t("reasonLabel")+"</label><textarea id='assessmentReason' rows='3' placeholder='"+esc(t("reasonPlaceholder"))+"'>"+saved+"</textarea><div class='assessment-actions'><button id='saveAssessment'>"+t("reasonSave")+"</button><span id='assessmentStatus' class='assessment-status'></span></div>";
+ const dk="aws-draft-reason-"+getCase().id+"-"+(current+1);const stored=localStorage.getItem(dk);
+ wrap.innerHTML="<label for='assessmentReason'>"+t("reasonLabel")+"</label><textarea id='assessmentReason' rows='3' placeholder='"+esc(t("reasonPlaceholder"))+"'>"+esc(stored!==null?stored:saved)+"</textarea><div class='assessment-actions'><button id='saveAssessment'>"+t("reasonSave")+"</button><span id='assessmentStatus' class='assessment-status'></span></div>";
  document.querySelector("#challengeFeedback").appendChild(wrap);const input=wrap.querySelector("#assessmentReason"),btn=wrap.querySelector("#saveAssessment"),st=wrap.querySelector("#assessmentStatus");
- const update=()=>btn.disabled=input.value.trim().length<20;update();input.addEventListener("input",update);
- btn.onclick=()=>{const text=input.value.trim();if(text.length<20)return;localStorage.setItem("aws-assessment-"+getCase().id+"-"+(current+1),text);st.textContent=t("reasonSaved");syncCompletion()};
+ const update=()=>{btn.disabled=input.value.trim().length<20;localStorage.setItem(dk,input.value)};
+ update();input.addEventListener("input",update);
+ btn.onclick=()=>{const text=input.value.trim();if(text.length<20)return;localStorage.setItem("aws-assessment-"+getCase().id+"-"+(current+1),text);localStorage.removeItem(dk);st.textContent=t("reasonSaved");syncCompletion()};
 }
 function syncCompletion(){
  const state=getState(current),ready=state==="mastered"|| (hasEvidence(current)&&hasEvidenceChecks(current)&&hasPassed(current)&&hasRationale(current));
@@ -278,7 +280,8 @@ const state=getState(current);
 document.querySelector("#evidence").classList.toggle("mastered",state==="mastered");
 document.querySelector("#evidenceTitle").textContent=evidenceDefs[current][0];
 document.querySelector("#evidencePrompt").textContent=evidenceDefs[current][1];
-document.querySelector("#evidenceInput").value=ev?.text||"";const checks=JSON.parse(localStorage.getItem("aws-evidence-checks-"+(current+1))||"null")||{};document.querySelector("#evidenceReal").checked=checks.real===true;document.querySelector("#evidenceConcrete").checked=checks.concrete===true;document.querySelector("#evidenceLearning").checked=checks.learning===true;
+const evDraft=localStorage.getItem("aws-draft-evidence-"+(current+1));
+document.querySelector("#evidenceInput").value=evDraft!==null?evDraft:ev?.text||"";const checks=JSON.parse(localStorage.getItem("aws-evidence-checks-"+(current+1))||"null")||{};document.querySelector("#evidenceReal").checked=checks.real===true;document.querySelector("#evidenceConcrete").checked=checks.concrete===true;document.querySelector("#evidenceLearning").checked=checks.learning===true;
 document.querySelector("#evidenceStatus").textContent=ev?(state==="mastered"?t("evidenceMastered"):t("evidenceSaved")):"";
 document.querySelector("#saveEvidence").disabled=false;
 syncCompletion();
@@ -296,7 +299,8 @@ function renderScenario(){
 }
 function renderContinue(){const p=document.createElement("div");p.className="feedback";p.innerHTML="<div class='feedback-title'>"+t("tryItStep")+"</div><p>"+t("continuePrompt")+"</p>";interactive.appendChild(p)}
 open.onclick=()=>{mission.hidden=!mission.hidden;open.textContent=mission.hidden?t("openMore"):t("openClose")};
-document.querySelector("#saveEvidence").onclick=()=>{const text=document.querySelector("#evidenceInput").value.trim();const real=document.querySelector("#evidenceReal").checked,concrete=document.querySelector("#evidenceConcrete").checked,learning=document.querySelector("#evidenceLearning").checked;if(text.length<30){document.querySelector("#evidenceStatus").textContent=t("evidenceTooShort");return}if(!(real&&concrete&&learning)){document.querySelector("#evidenceStatus").textContent=t("evidenceChecksMissing");return}localStorage.setItem("aws-evidence-"+(current+1),JSON.stringify({version:2,module:current+1,caseId:getCase().id,text,savedAt:new Date().toISOString()}));localStorage.setItem("aws-evidence-checks-"+(current+1),JSON.stringify({real,concrete,learning}));document.querySelector("#evidenceStatus").textContent=t("evidenceSaved");
+document.querySelector("#evidenceInput").oninput=e=>localStorage.setItem("aws-draft-evidence-"+(current+1),e.target.value);
+document.querySelector("#saveEvidence").onclick=()=>{const text=document.querySelector("#evidenceInput").value.trim();const real=document.querySelector("#evidenceReal").checked,concrete=document.querySelector("#evidenceConcrete").checked,learning=document.querySelector("#evidenceLearning").checked;if(text.length<30){document.querySelector("#evidenceStatus").textContent=t("evidenceTooShort");return}if(!(real&&concrete&&learning)){document.querySelector("#evidenceStatus").textContent=t("evidenceChecksMissing");return}localStorage.setItem("aws-evidence-"+(current+1),JSON.stringify({version:2,module:current+1,caseId:getCase().id,text,savedAt:new Date().toISOString()}));localStorage.removeItem("aws-draft-evidence-"+(current+1));localStorage.setItem("aws-evidence-checks-"+(current+1),JSON.stringify({real,concrete,learning}));document.querySelector("#evidenceStatus").textContent=t("evidenceSaved");
 localStorage.setItem("aws-state-"+(current+1),"evidence_ready");
 syncCompletion();
 status.textContent=t("statusEvidence");
