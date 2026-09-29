@@ -256,7 +256,7 @@ function renderAssessmentReason(saved){
  const dk="aws-draft-reason-"+getCase().id+"-"+(current+1);const stored=localStorage.getItem(dk);
  wrap.innerHTML="<label for='assessmentReason'>"+t("reasonLabel")+"</label><textarea id='assessmentReason' rows='3' placeholder='"+esc(t("reasonPlaceholder"))+"'>"+esc(stored!==null?stored:saved)+"</textarea><div class='assessment-actions'><button id='saveAssessment'>"+t("reasonSave")+"</button><span id='assessmentStatus' class='assessment-status'></span></div>";
  document.querySelector("#challengeFeedback").appendChild(wrap);const input=wrap.querySelector("#assessmentReason"),btn=wrap.querySelector("#saveAssessment"),st=wrap.querySelector("#assessmentStatus");
- const update=()=>{btn.disabled=input.value.trim().length<20;localStorage.setItem(dk,input.value)};
+ const update=()=>{const short=input.value.trim().length<20;btn.disabled=short;st.textContent=short?t("reasonTooShort"):"";localStorage.setItem(dk,input.value)};
  update();input.addEventListener("input",update);
  btn.onclick=()=>{const text=input.value.trim();if(text.length<20)return;localStorage.setItem("aws-assessment-"+getCase().id+"-"+(current+1),text);localStorage.removeItem(dk);st.textContent=t("reasonSaved");syncCompletion()};
 }
@@ -299,7 +299,7 @@ function renderScenario(){
 }
 function renderContinue(){const p=document.createElement("div");p.className="feedback";p.innerHTML="<div class='feedback-title'>"+t("tryItStep")+"</div><p>"+t("continuePrompt")+"</p>";interactive.appendChild(p)}
 open.onclick=()=>{mission.hidden=!mission.hidden;open.textContent=mission.hidden?t("openMore"):t("openClose")};
-document.querySelector("#evidenceInput").oninput=e=>localStorage.setItem("aws-draft-evidence-"+(current+1),e.target.value);
+document.querySelector("#evidenceInput").oninput=e=>{const v=e.target.value;localStorage.setItem("aws-draft-evidence-"+(current+1),v);const s=document.querySelector("#evidenceStatus");if(v.trim().length<30)s.textContent=t("evidenceTooShort");else if(s.textContent===t("evidenceTooShort"))s.textContent=""};
 document.querySelector("#saveEvidence").onclick=()=>{const text=document.querySelector("#evidenceInput").value.trim();const real=document.querySelector("#evidenceReal").checked,concrete=document.querySelector("#evidenceConcrete").checked,learning=document.querySelector("#evidenceLearning").checked;if(text.length<30){document.querySelector("#evidenceStatus").textContent=t("evidenceTooShort");return}if(!(real&&concrete&&learning)){document.querySelector("#evidenceStatus").textContent=t("evidenceChecksMissing");return}localStorage.setItem("aws-evidence-"+(current+1),JSON.stringify({version:2,module:current+1,caseId:getCase().id,text,savedAt:new Date().toISOString()}));localStorage.removeItem("aws-draft-evidence-"+(current+1));localStorage.setItem("aws-evidence-checks-"+(current+1),JSON.stringify({real,concrete,learning}));document.querySelector("#evidenceStatus").textContent=t("evidenceSaved");
 localStorage.setItem("aws-state-"+(current+1),"evidence_ready");
 syncCompletion();
