@@ -139,6 +139,21 @@ assert(await evalJs(`localStorage.getItem('aws-evidence-1')`) === null, 'the dra
 assert(await evalJs(`(()=>{localStorage.setItem('aws-draft-reason-own-1','borrador de razonamiento en curso');renderAssessmentReason('texto ya guardado');return document.querySelector('#assessmentReason').value})()`) === 'borrador de razonamiento en curso', 'reasoning draft takes precedence over the saved text');
 assert(await evalJs(`localStorage.getItem('aws-assessment-own-1')`) === null, 'the reasoning draft does not overwrite the saved reasoning');
 
+// --- actionable errors: the requirement shows while the action is blocked, not after the click
+await evalJs(`(()=>{const t=document.querySelector('#evidenceInput');t.value='corto';t.dispatchEvent(new Event('input'));return 1})()`);
+assert((await evalJs(`document.querySelector('#evidenceStatus').textContent`)).includes('30'), 'the evidence minimum shows while the evidence is too short');
+await evalJs(`(()=>{const t=document.querySelector('#evidenceInput');t.value=${JSON.stringify(DRAFT)};t.dispatchEvent(new Event('input'));return 1})()`);
+assert(await evalJs(`document.querySelector('#evidenceStatus').textContent`) === '', 'the evidence minimum clears once the text is long enough');
+
+await evalJs(`(()=>{localStorage.removeItem('aws-draft-reason-own-1');renderAssessmentReason('');return 1})()`);
+assert(await evalJs(`document.querySelector('#saveAssessment').disabled`) === true, 'the reasoning button is disabled when the text is missing');
+assert((await evalJs(`document.querySelector('#assessmentStatus').textContent`)).includes('20'), 'the reasoning requirement shows while the button is disabled');
+await evalJs(`(()=>{const i=document.querySelector('#assessmentReason');i.value='demasiado corto';i.dispatchEvent(new Event('input'));return 1})()`);
+assert(await evalJs(`document.querySelector('#saveAssessment').disabled`) === true, 'the reasoning button stays disabled below 20 characters');
+await evalJs(`(()=>{const i=document.querySelector('#assessmentReason');i.value='Un razonamiento con mas de veinte caracteres.';i.dispatchEvent(new Event('input'));return 1})()`);
+assert(await evalJs(`document.querySelector('#saveAssessment').disabled`) === false, 'the reasoning button enables at 20 characters');
+assert(await evalJs(`document.querySelector('#assessmentStatus').textContent`) === '', 'the reasoning requirement clears once it can be saved');
+
 console.log('ALL PASS');
 ws.close();
 chrome.kill();
