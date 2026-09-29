@@ -154,6 +154,19 @@ await evalJs(`(()=>{const i=document.querySelector('#assessmentReason');i.value=
 assert(await evalJs(`document.querySelector('#saveAssessment').disabled`) === false, 'the reasoning button enables at 20 characters');
 assert(await evalJs(`document.querySelector('#assessmentStatus').textContent`) === '', 'the reasoning requirement clears once it can be saved');
 
+// --- contrast: the faint text token clears AA on every surface it sits on
+const faintContrast = `(()=>{const g=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const lum=c=>{c=c.length===4?'#'+[1,2,3].map(i=>c[i]+c[i]).join(''):c;const v=[1,3,5].map(i=>parseInt(c.slice(i,i+2),16)/255).map(x=>x<=.04045?x/12.92:((x+.055)/1.055)**2.4);return .2126*v[0]+.7152*v[1]+.0722*v[2]};
+const ratio=(a,b)=>{const x=lum(a),y=lum(b);const hi=Math.max(x,y),lo=Math.min(x,y);return +((hi+.05)/(lo+.05)).toFixed(3)};
+const fg=g('--text-faint');
+return ['--bg','--bg-card','--bg-subtle','--bg-subtle-2','--bg-progress','--bg-hover'].map(k=>({k,r:ratio(fg,g(k))}))})()`;
+let r = await evalJs(faintContrast);
+assert(Math.min(...r.map(x=>x.r)) >= 4.5, 'faint text keeps AA contrast on every light surface (worst ' + Math.min(...r.map(x=>x.r)) + ')');
+await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-color-scheme', value: 'dark' }] });
+r = await evalJs(faintContrast);
+assert(Math.min(...r.map(x=>x.r)) >= 4.5, 'faint text keeps AA contrast on every dark surface (worst ' + Math.min(...r.map(x=>x.r)) + ')');
+await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-color-scheme', value: 'light' }] });
+
 console.log('ALL PASS');
 ws.close();
 chrome.kill();
