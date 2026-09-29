@@ -119,6 +119,26 @@ assert(await evalJs(`getComputedStyle(document.querySelector('#badges')).display
 assert(await evalJs(`document.querySelector('#xp').textContent`) === '100 XP', 'XP reflects mastered module');
 assert(await evalJs(`!document.body.classList.contains('prelude')`), 'prelude stays off once decided');
 
+// --- drafts: work in progress survives reload and module switches
+const DRAFT = 'Evidencia en curso que todavia no se ha guardado.';
+await evalJs(`(()=>{const t=document.querySelector('#evidenceInput');t.value=${JSON.stringify(DRAFT)};t.dispatchEvent(new Event('input'));return 1})()`);
+assert(await evalJs(`hasEvidence(0)`) === false, 'a draft does not count as saved evidence');
+assert(await evalJs(`document.querySelector('#evidenceInput').value`) === DRAFT, 'the evidence draft is kept as it is written');
+
+await check('evidence-draft');
+assert(await evalJs(`document.querySelector('#evidenceInput').value`) === DRAFT, 'evidence draft survives a reload');
+assert(await evalJs(`hasEvidence(0)`) === false, 'evidence draft still does not satisfy the evidence gate after reload');
+
+await evalJs(`(()=>{document.querySelectorAll('.node')[1].click();return 1})()`);
+await sleep(300);
+await evalJs(`(()=>{document.querySelectorAll('.node')[0].click();return 1})()`);
+await sleep(300);
+assert(await evalJs(`document.querySelector('#evidenceInput').value`) === DRAFT, 'evidence draft survives a module switch');
+assert(await evalJs(`localStorage.getItem('aws-evidence-1')`) === null, 'the draft is stored apart from the saved evidence');
+
+assert(await evalJs(`(()=>{localStorage.setItem('aws-draft-reason-own-1','borrador de razonamiento en curso');renderAssessmentReason('texto ya guardado');return document.querySelector('#assessmentReason').value})()`) === 'borrador de razonamiento en curso', 'reasoning draft takes precedence over the saved text');
+assert(await evalJs(`localStorage.getItem('aws-assessment-own-1')`) === null, 'the reasoning draft does not overwrite the saved reasoning');
+
 console.log('ALL PASS');
 ws.close();
 chrome.kill();
