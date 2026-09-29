@@ -167,6 +167,28 @@ r = await evalJs(faintContrast);
 assert(Math.min(...r.map(x=>x.r)) >= 4.5, 'faint text keeps AA contrast on every dark surface (worst ' + Math.min(...r.map(x=>x.r)) + ')');
 await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-color-scheme', value: 'light' }] });
 
+// --- PWA update path: network first, cache only as the offline fallback, old caches purged
+assert((await (await fetch(url + 'sw.js')).text()).includes('ia-work-system-v3'), 'the service worker declares the v3 cache');
+
+await check('pwa');
+assert(await evalJs(`!!navigator.serviceWorker.controller`), 'the page is controlled by the service worker');
+
+await evalJs(`caches.open('ia-work-system-v3').then(c=>c.put('./content.js',new Response('//POISON'))).then(()=>1)`);
+assert((await evalJs(`fetch('./content.js').then(r=>r.text())`)).includes('window.AWS_CONTENT'), 'the network wins over the cache while the server answers');
+
+await evalJs(`caches.open('ia-work-system-v2').then(c=>c.put('./stale',new Response('old design'))).then(()=>1)`);
+await evalJs(`navigator.serviceWorker.getRegistration().then(r=>r?r.unregister():true).then(()=>1)`);
+await check('pwa-activate');
+for (let i = 0; i < 40 && (await evalJs(`caches.has('ia-work-system-v2')`)); i++) await sleep(250);
+assert(await evalJs(`caches.has('ia-work-system-v2')`) === false, 'activate purges the inherited v2 cache');
+assert(await evalJs(`caches.has('ia-work-system-v3')`) === true, 'the v3 cache survives activation');
+assert(await evalJs(`!!navigator.serviceWorker.controller`), 'the page is controlled again after re-registration');
+
+await evalJs(`caches.open('ia-work-system-v3').then(c=>c.put('./offline-fallback.js',new Response('POISON-FALLBACK'))).then(()=>1)`);
+server.kill();
+for (let i = 0; i < 40; i++) { try { await fetch(url); await sleep(200); } catch { break; } }
+assert((await evalJs(`fetch('./offline-fallback.js').then(r=>r.text())`)).includes('POISON-FALLBACK'), 'the cache answers when the network is gone');
+
 console.log('ALL PASS');
 ws.close();
 chrome.kill();
