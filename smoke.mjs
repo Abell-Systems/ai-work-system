@@ -75,6 +75,14 @@ assert(await evalJs(`document.querySelector('#taskInput').value`) === '', 'no ta
 assert(await evalJs(`document.querySelector('#taskGo').disabled`) === true, 'cannot continue without a task');
 assert(await evalJs(`[...document.querySelectorAll('.hero-card button,#external')].filter(el=>el.offsetParent&&!el.closest('#casePicker')).length`) === 0, 'no competing action visible before the first decision');
 
+// --- blocked navigation answers instead of staying silent
+assert(await evalJs(`getComputedStyle(document.querySelectorAll('.node')[1]).cursor`) === 'not-allowed', 'modules ahead of the learner read as locked');
+assert(await evalJs(`getComputedStyle(document.querySelectorAll('.node')[0]).cursor`) === 'pointer', 'the current module keeps reading as clickable');
+await evalJs(`document.querySelectorAll('.node')[9].click()`);
+assert(await evalJs(`current`) === 0, 'a locked module click does not jump ahead');
+await evalJs(`document.querySelectorAll('.node')[0].click()`);
+assert(await evalJs(`document.activeElement.id`) === 'taskInput', 'a module click before the first decision takes the learner to the task field');
+
 // --- suggestion chip fills the task field
 await evalJs(`document.querySelectorAll('.task-hint')[2].click()`);
 await sleep(100);
@@ -101,6 +109,11 @@ const titles = await evalJs(`(()=>{const out=[];for(let i=0;i<10;i++){current=i;
 assert(titles.length === 10 && titles[0] === 'Cambia cómo ves la IA' && titles[9] === 'Diseña tu sistema', 'all 10 modules render without errors');
 assert((await evalJs(`document.querySelector('#missionSteps').textContent`)).includes('Preparar el briefing semanal para dirección'), 'the final project steps are built on the learner task');
 assert((await evalJs(`document.querySelector('#practiceText').textContent`)).includes('Preparar el briefing semanal para dirección'), 'the practice text is built on the learner task');
+await evalJs(`current=0;render();1`);
+assert(await evalJs(`document.querySelectorAll('.node')[1].classList.contains('locked')`) === true, 'the next module reads as locked while this one is current');
+await evalJs(`current=1;render();1`);
+assert(await evalJs(`document.querySelectorAll('.node')[1].classList.contains('locked')`) === false, 'the next module unlocks once the learner reaches it');
+assert(await evalJs(`document.querySelectorAll('.node')[0].classList.contains('locked')`) === false, 'a reached module stays unlocked when moving forward');
 await evalJs(`current=0;render();1`);
 assert((await evalJs(`document.querySelector('#challengePrompt').textContent`)).includes('Preparar el briefing semanal para dirección'), 'the journey challenge is built on the learner task');
 
